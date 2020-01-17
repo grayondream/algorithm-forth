@@ -44,11 +44,11 @@ def search_visualization_hook(data, start, mid, end, target, count):
         elif end == i:
             color_list.append('r')
         else:
-            color_list.append('b')
+            color_list.append('black')
 
-    plt.text(0,max(data),str(data))
-    plt.text(0,max(data) - 1,"start=%d,end=%d" % (start, end))
-    plt.text(0,max(data) - 2,"target=%d" % target)
+    plt.text(0,max(data),str(data[:10]) + '...')
+    plt.text(0,max(data) - 10,"start=%d,end=%d" % (start, end))
+    plt.text(0,max(data) - 20,"target=%d" % target)
 
     plt.bar(range(len(data)), data, color=color_list)
 
