@@ -19,6 +19,9 @@ class stack(object):
         del self._data[-1]
         return res
 
+    def top(self):
+        return self._data[-1]
+
     def empty(self):
         return 0 == len(self._data)
 
