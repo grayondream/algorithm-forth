@@ -324,5 +324,12 @@ def reverse_link(head):
         cur.next = last
         return cur
     
+    
+'''
+1.3.31  见doublelink的实现
+'''
+
+
+
 if __name__ == '__main__':
     main()
