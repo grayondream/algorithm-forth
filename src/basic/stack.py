@@ -35,6 +35,16 @@ class stack(object):
         new_stk._data = stk._data.copy()
         return new_stk
         
+    @staticmethod
+    def catenation(self, rst, snd):
+        '''
+        @brief  将栈snd调拼接到栈rst后面
+        @param  rst 第一个栈
+        @param  snd 第二个栈
+        '''
+        new_stk = rst.clone(rst)
+        new_stk._data += snd._data
+        return new_stk
         
 def main():
     pass

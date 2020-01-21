@@ -55,38 +55,69 @@ def complete_left_brackets(line):
     @param  line    表达式
     @return 补全后的表达式字符串
     '''
+    val_stk = stack.stack()
     op_stk = stack.stack()
-    value_stk = stack.stack()
-    index = 0
-    for ch in line:
-        if is_right_bracket(ch):
+    for ch in line:    
+        if ch.isdigit():
+            val_stk.push(ch)
+        elif ch in '+-*/':
             op_stk.push(ch)
-        elif ch.isdigit():
-            start = index
-            while line[index].isdigit():
-                index += 1
-            value = int(line[start:index])
-            value_stk.push(value)
-            index -= 1
+        elif ch == ')':
+            cur_value = '(' + op_stk.pop() + val_stk.pop() + ch
+            val_stk.push(cur_value)
         else:
-            raise Exception("unknown character!")
-
-        index += 1
-
-    '''
-    TODO:尚未完成
-    '''
+            raise Exception('bad character')
+            
+    return val_stk.pop()
     
     
-def op_is_prior(rst, snd):
+def get_prior(rst):
     '''
-    @brief  1.3.10 判断操作符rst是否比操作符snd的优先级高
+    @brief  获取操作符的优先级
     @param  rst 操作符， + - × /
-    @param  snd 同rst
-    @return     True or False
+    @return     
     '''
-    pass
+    ret = 0
+    if rst in '+-':
+        ret = 1
+    elif rst in '*/':
+        ret = 2
+    else:
+        ret = 0
+    
+    return ret
 
+
+def in2post(line):
+    '''
+    @brief  1.3.10  中序表达式转换为后序表达式，不含括号的表达式转换
+    @param  line    中序表达式
+    '''
+    op_stk = stack.stack()
+    ret_line = ''
+    for ch in line:
+        if ch.isdigit():
+            ret_line += ch
+        elif ch == '(':
+            op_stk.push(ch)
+        elif ch == ')':
+            tmp = op_stk.pop()
+            ret_line += tmp
+            while tmp != ')':
+                tmp = op_stk.pop()
+        else:
+            while get_prior(op_stk.top()) > get_prior(ch):
+                ret_line += op_stk.pop()
+                
+            op_stk.push(ch)
+    
+    while not op_stk.empty():
+        ret_line += op_stk.pop()
+    
+    return op_stk
+            
+        else:
+            raise Exception('bad characters!')
 
 def link_delete_tail(link):
     '''
@@ -378,5 +409,124 @@ def move_front(line):
 '''
             
     
+class read_buffer(object):
+    '''
+    @brief  1.3.44  文件读写buffer
+    @param  data    数据区
+    @param  cur     贯标位置
+    '''
+    def __init__(self, filename):
+        with open(filename, 'r') as f:
+            self.data = list(f.readlines())
+        self.cur = 0
+    
+    def delete(self):
+        '''
+        @brief  删除并返回光标处的字符
+        '''
+        res = self.data[self.cur]
+        del self.data[self.cur]
+        return res
+        
+    def insert(self, ch):
+        '''
+        @brief  在光标处插入字符，插入后的字符的索引为self.cur
+        @param  ch  插入的字符
+        '''
+        self.data.insert(self.cur, ch)
+        
+    def left(self, k):
+        '''
+        @brief  光标向左移动k个位置
+        @param  k   光标移动的尺度
+        '''
+        self.cur = max(self.cur - k, 0)
+        
+    def right(self, k):
+        '''
+        @brief  光标向右移动k个位置
+        @param  k   移动的位置尺度
+        '''
+        self.cur = min(self.size() - 1, self.cur + k)
+        
+    def size(self):
+        return len(self.data)
+        
+
+def is_stk_overflow(line):
+    '''
+    @brief  1.3.45 给定一系列的操作判定操作是否导致栈溢出，其中push为数字，pop为-
+    @param  line    操作定义字符串
+    '''
+    cur = 0
+    for ch in line:
+        if ch.isdigit():
+            cur += 1
+        elif ch == '-':
+            cur -= 1
+            if cur < 0:
+                return False        #overflow
+                
+    return True
+    
+    
+def is_stkop_legal(push_line, pop_line):
+    '''
+    @brief  1.3.46 给定push的序列，判断pop序列是否合法
+    @param  push_line   push序列
+    @param  pop_line    pop序列
+    @return True or False
+    @example:   
+    1 2 3 -- > 3 2 1 True
+               2 3 1 False 
+    @note:  算法实现的基本思路是，之前pop的元素在pushline中的位置一定比当前元素的位置靠前 1 2 3  2 1 3 ，也就是说之前元素的index小于当前元素的index
+    '''
+    indexs = [push_line.index(ch) for ch in pop_line]
+    for i in range(len(indexs)):
+        for j in [i - x - 1 for x in range(i)]:
+            if i == 0:
+                continue
+            else:
+                if indexs[i] > indexs[j]:
+                    break
+                else:
+                    if indexs[i] < indexs[j]:
+                        return False
+    
+    return True
+        
+    
+    
+'''
+1.3.47 见queue和stack的catenation操作
+'''
+
+
+class queue_with_stack(object):
+    '''
+    @brief  1.3.49  双栈实现队列
+    '''
+    def __init__(self):
+        self.rst = stack.stack()
+        self.snd = stack.stack()
+        
+    def enqueue(self, data):
+        '''
+        @brief  入队
+        @param  data    入队的数据
+        '''
+        self.rst.push(data)
+        
+    def dequeue(self):
+        '''
+        @brief  出队
+        '''
+        if self.snd.empty():
+            while not self.rst.empty():
+                self.snd.push(self.rst.pop())
+                
+        return self.snd.pop()
+        
+        
 if __name__ == '__main__':
     main()

@@ -21,6 +21,7 @@ class queue(object):
     def size(self):
         return len(self._data)
     
+    @staticmethod
     def clone(self, q):
         '''
         @brief  返回一个queue的拷贝版本
@@ -30,6 +31,16 @@ class queue(object):
         new_q._data = q._data.copy()
         return new_q
         
+    @staticmethod
+    def catenation(self, rst, snd):
+        '''
+        @brief  将队列snd接在队列rst后面
+        @param  rst 第一个队列
+        @param  snd 第二个队列
+        '''
+        new_q = rst.clone(rst)
+        new_q._data += snd._data
+        return new_q
         
 def main():
     pass
