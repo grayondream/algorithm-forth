@@ -25,7 +25,17 @@ class stack(object):
     def empty(self):
         return 0 == len(self._data)
 
-
+    @staticmethod
+    def clone(self, stk):
+        '''
+        @brief  返回一个拷贝的版本
+        @param  stk 需要拷贝的stack
+        '''
+        new_stk = stack()
+        new_stk._data = stk._data.copy()
+        return new_stk
+        
+        
 def main():
     pass
 

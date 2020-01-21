@@ -234,66 +234,9 @@ def main():
     pass
 
 
-def extend_link(link, size):
-    '''
-    @brief  扩展link节点，如果link为空则默认创建一个的链表
-    @param  link链表需要插入的节点
-    '''
-    is_none = False
-    if link is None:
-        is_none = True
-    
-    index = link
-    while size != 0:
-        node = linklist.linklist(data=0, next=None)
-        if index.next is not None:
-            node.next = index.next.next
-            
-        index.next = node
-        index = index.next
-        size -= 1
-    
-    if is_none:
-        index.next = link
-            
-    return link
-    
-    
-class circle_queue(object):
-    '''
-    @brief  1.3.29 环形链表queue实现
-    '''
-    def __init__(self):
-        super(circle_queue, self).__init__()
-        self.head = extend_link(None, 4)        #magic number 4,默认链表长度
-        self.tail = self.head
-        self.len = 0
-        
-    def enqueue(self, item):
-        if self.full():
-            extend_link(self.head, self.len * 2)
-            
-        self.head = self.head.next
-        self.head = item
-        self.len += 1
-    
-    def dequeue(self):
-        if self.empty():
-            return None
-        
-        value = self.head.data
-        self.tail = self.tail.next
-        self.len -= 1
-        return value
-    
-    def empty(self):
-        return self.tail == self.head and self.len == 0
-    
-    def size(self):
-        return self.len
-    
-    def full(self):
-        return self.head.next == self.tail and self.len != 0
+'''
+1.3.29  见cyc_queue的实现
+'''
 
 
 def reverse_link(head):
@@ -330,6 +273,110 @@ def reverse_link(head):
 '''
 
 
+'''
+1.3.32  见stkqueue实现
+'''
 
+
+'''
+1.3.33 见doublequeue实现
+'''
+
+
+'''
+1.3.34  见randombag实现
+'''
+
+
+'''
+1.3.25  见randomqueue实现
+'''
+
+
+def josephus(n, m):
+    '''
+    @brief  1.3.37 josephus问题，排队送死
+    @param  n   人数
+    @param  m   数数的次数
+    @note   更加符合实际情况的实现应该是使用标志位进行标记这个人已经死了，这里懒得写就这样用python写的快
+    '''
+    l = [i for i in range(n)] #0 , 1, 2, , 3, ...
+    cur = 0
+    res = []
+    while True:
+        cur += m
+        cur = cur % n
+        res.append(cur)
+        del l[cur]
+        
+    return res
+        
+    
+class generalize_queue(object):
+    '''
+    @brief  1.3.38  删除第K个元素
+    '''
+    def __init__(self):
+        super(generalize_queue, self).__init__()
+        
+        self.data = []
+    
+    def empty(self):
+        return 0 == len(self.data)
+        
+    def size(self):
+        return len(self.data)
+        
+    def insert(self, data):
+        '''
+        @brief  插入一个元素
+        @param  data    插入的元素
+        '''
+        self.data.append(data)
+        
+    def delete(self, k):
+        '''
+        @brief  删除第k个元素
+        @param  k
+        '''
+        if k > self.size():
+            return None
+            
+        res = self.data[self.size() - k - 1]
+        del self.data[self.size() - k - 1]
+        return res
+        
+       
+def move_front(line):
+    '''
+    @brief  1.3.40 前移编码，创建一个链表，遍历line，每次遇到表中存在的元素将新元素插入到表头，删除表中存在的节点
+    '''
+    head = linklist.linklist()
+    for ch in line:
+        node = linklist.linklist.find(head, ch)
+        if node == None:
+            node = linklist.linklist(head, ch)
+            head = node
+        elif head == node and head.data == ch:
+            continue
+        else:
+            tmp = node.next
+            node.next = node.next.next
+            tmp.next = head
+            head = tmp
+            
+    return head
+    
+
+'''
+1.3.41    参见queue的clone实现
+'''
+
+
+'''
+1.3.43  参见stk的clone实现
+'''
+            
+    
 if __name__ == '__main__':
     main()

@@ -20,7 +20,17 @@ class queue(object):
 
     def size(self):
         return len(self._data)
-
+    
+    def clone(self, q):
+        '''
+        @brief  返回一个queue的拷贝版本
+        @param  q   需要进行拷贝的queue
+        '''
+        new_q = queue()
+        new_q._data = q._data.copy()
+        return new_q
+        
+        
 def main():
     pass
 
