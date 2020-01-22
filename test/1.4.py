@@ -72,5 +72,118 @@ def binary_search_min(l, start, end, target):
     return -1
     
     
+def list_shared_value(rst, snd):
+    '''
+    @brief  1.4.12  返回有序数组rst和snd的公共元素
+    @param  rst 第一个列表
+    @param  snd 第二个列表
+    @return list
+    '''
+    ret = []
+    i = 0
+    j = 0
+    while i < len(rst) and j < len(snd):
+        if rst[i] == snd[j]:
+            ret.append(rst[i])
+            i += 1
+            j += 1
+        elif rst[i] > snd[j]:
+            i += 1
+        else:
+            j += 1
+    
+    return ret
+    
+
+def four_sum_force(l, target):
+    '''
+    @brief  1.4.14 寻找出数组中四个数之和为target的组合个数，暴力查找法
+    @param  l   list
+    @param  target  目标值
+    @return 数量
+    '''
+    count = 0
+    for i in range(len(l)):
+        for j in range(i + 1, len(l)):
+            for k in range(j + 1, len(l)):
+                for n in range(k + 1, len(l)):
+                    if target == l[i] + l[j] + l[k] + l[n]:
+                        count += 1
+    
+    return count
+
+
+def four_sum_bin(l, target):
+    '''
+    @brief  1.4.14 寻找出数组中四个数之和为target的组合个数，二分查找法
+    @param  l   list
+    @param  target  目标值
+    @return 数量
+    '''
+    count = 0
+    l.sort()
+    for i in range(len(l)):
+        for j in range(i + 1, len(l)):
+            for k in range(j + 1, len(l)):
+                if binary_search.binary_search(l, k + 1, len(l), target - l[i] - l[j] - l[k]) != -1:
+                    count += 1
+    
+    return count
+    
+
+def two_sum_faster(l, target):
+    '''
+    @brief  1.4.15 寻找出有序数组中两个值之和为target的组合的个数，要求算法O(n)
+    @param  l   list
+    @param  target  目标值
+    '''
+    left = 0
+    right = len(l) - 1
+    count = 0
+    while left <= right:
+        if l[left] + l[right] == target:
+            count += 1
+        elif l[left] + l[right] < target:
+            left += 1
+        else:
+            right -= 1
+        
+    return count
+    
+
+def three_sum_faster(l, target):
+    '''
+    @brief  参照two_sum_faster寻找出有序数组中三个数之和为target的个数，要求算法O(n*n)
+    @param  l   list
+    @param  target  目标值
+    '''
+    for i in range(len(l)):
+        left = i + 1
+        right = len(l) - 1
+        count = 0
+        while left <= right:
+            if l[left] + l[right] + l[i] == target:
+                count += 1
+            elif l[left] + l[right] + l[i] < target:
+                left += 1
+            else:
+                right -= 1
+                
+    return count 
+    
+    
+def nearest_pair(l):
+    '''
+    @brief  1.4.16 设计线性对数级别的算法找出list中距离最近的两个元素
+    @param  l   list
+    '''
+    
+
+def farest_pair(l):
+    '''
+    @brief  1.4.17  设计线性对数级别的算法找出list中距离最远的两个元素
+    @param  l   list
+    '''
+    
 if __name__ == '__main__':
     pass
