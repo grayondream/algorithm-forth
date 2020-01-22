@@ -1,4 +1,5 @@
 from src.search import binary_search
+import sys
 
 
 def three_sum_force(l, target):
@@ -177,13 +178,218 @@ def nearest_pair(l):
     @brief  1.4.16 设计线性对数级别的算法找出list中距离最近的两个元素
     @param  l   list
     '''
+    l.sort()
+    rst = 0
+    snd = 0
+    for i in range(1, len(l)):
+        if abs(rst - snd) > abs(l[i - 1], l[i]):
+            rst = l[i - 1]
+            snd = l[i]
+    
+    return rst, snd
     
 
 def farest_pair(l):
     '''
     @brief  1.4.17  设计线性对数级别的算法找出list中距离最远的两个元素
     @param  l   list
+    @param  找出最大值和最小值即可
     '''
+    max_ele = 0
+    min_ele = sys.maxsize
+    for ele in l:
+        max_ele = max(max_ele, ele)
+        min_ele = min(min_ele, ele)
+        
+    return max_ele, min_ele
     
+    
+def local_min(l):
+    '''
+    @brief  1.4.18  寻找出local最小值的index，a[i]<a[i+1] and a[i-1]>a[i]
+    @param  l   list
+    @return index
+    '''
+    size = len(l)
+    if 1 == size:
+        return 0
+    elif l[0] < l[1]:
+        return 0
+    elif l[size - 2] > l[size - 1]:
+        return size - 1
+        
+    left = 1
+    right = size - 2
+    while left <= right:
+        mid = left + (right - left)/2
+        if l[mid] < l[mid - 1] and l[mid] < l[mid + 1]:
+            return mid
+        elif l[mid] > l[mid - 1]:
+            right = mid - 1
+        elif l[mid] > l[mid + 1]:
+            left = mid + 1
+            
+    return -1
+        
+
+def minium_index(l):
+    ret = l[0]
+    for i in range(1, len(l)):
+        if l[i] < ret:
+            ret = i
+            
+    return ret
+    
+    
+
+def matrix_partition(matrix, row, col):
+    '''
+    @brief  matrix_local_min的分治部分
+    @param  matrix  矩阵
+    @param  row 行
+    @param  col 列
+    '''
+    cur_item = matrix[row][col]
+    left = matrix[row][col - 1 if col - 1 >= 0 else col]
+    top = matrix[row - 1 if row - 1>= 0 else row][col]
+    bottom = matrix[row + 1 if row + 1 < len(matrix) else row][col]
+    right = matrix[row][col + 1 if col + 1 < len(matrix[0]) else col]
+    
+    items = [left, top, right, bottom]
+    items.sort()
+    min_item = items[0]
+    
+    ret_row = row
+    ret_col = col
+    if min_item == cur_item:
+        return ret_row, ret_col
+    elif min_item == left:
+        ret_col = col - 1
+        matrix_partition(matrix, ret_row, ret_col)
+    elif min_item == right:
+        ret_col = col + 1
+        matrix_partition(matrix, ret_row, ret_col)
+    elif min_item == top:
+        ret_row = row - 1
+        matrix_partition(matrix, ret_row, ret_col)
+    elif min_item == bottom:
+        ret_row = row + 1
+        matrix_partition(matrix, ret_row, ret_col)
+    else:
+        pass
+        
+    return ret_row, ret_col
+    
+    
+def matrix_local_min(matrix):
+    '''
+    @brief  1.4.19 寻找去matrix中的局部最小值，要求算法规模O(n),局部最小值表示当前元素小于四周的元素
+    @param  matrix  矩阵
+    @return     value
+    @note   参照：https://www.jianshu.com/p/b4f5cb071f04
+            解法一：找到每一列的局部最小值，然后遍历找到的最小值，判断是不是局部最小值
+            解法二：分治算法，将大矩阵拆分为小矩阵,matrix_partition的代码暂时并未完全搞懂
+            TODO:
+    '''
+    mid_row = int(len(matrix) / 2)
+    mid_row_array = matrix[mid_row]
+    mid_min_index =minium_index(mid_row_array)
+    return matrix_partition(matrix, mid_row, mid_min_index)
+    
+    
+def double_tone_search(l, value):
+    '''
+    @brief  1.4.20  数组是先升后降判断value是否在数组中，要求最坏情况3lgn
+    @param  l   list
+    @param  value   需要search的值
+    @return True or False
+    '''
+    left = 0 
+    right = len(l) - 1
+    #先寻找最大值
+    mid  = None
+    while left <= right:
+        mid = left + (right - left)/2
+        if mid > 0 and mid < len(l) and l[mid - 1] < l[mid] and l[mid] < l[mid + 1]:
+            break
+        elif l[mid] > l[mid - 1]:
+            left = mid + 1
+        elif l[mid + 1] < l[mid]:
+            right = mid - 1
+        
+    if value > l[mid] or value < l[0] or value < l[len(l) - 1]:
+        return False
+    else:
+        ret = binary_search.binary_search(l, 0, mid, value)
+        if -1 != ret:
+            return ret
+        else:
+            return -1 != binary_search.binary_search(l, mid, len(l) - 1, value)
+            
+    return False
+    
+    
+'''
+1.4.22 见 binary_search.binary_search_constrain
+'''
+
+
+def binary_search_rational(l, value):
+    '''
+    @brief  1.4.23  比较l中是否存在和有理数value相同的值，比较规则，abs(value - item) < 1/n*n即可
+    @param  l   list
+    @param  value   值
+    @return     index
+    '''
+    left = 0
+    right = len(l) - 1
+    while left <= right:
+        mid = left + (right - left)/2
+        if abs(l[mid] - value) < 1 / (len(l) * len(l)):
+            return mid
+        elif l[mid] > value:
+            right = mid - 1
+        else:
+            left = mid + 1
+
+
+def single_egg(n):
+    '''
+    @brief  一个鸡蛋判断鸡蛋不摔坏的楼层，O(F),F为目标楼层
+    @param  n   楼层数目
+    @return 目标楼层F
+    '''
+    pass
+    
+
+def double_egg(n):
+    '''
+    @brief  两个鸡蛋判断楼层，O(cF^1/2)
+    @param  n   楼层高度
+    @return 目标楼层F
+    '''
+    pass
+    
+
+'''
+1.4.27  两个栈实现一个队列   1.3做过
+1.4.28  队列实现栈，简单懒得写
+1.4.29  两个栈实现stqueue，不重复造轮子
+1.4.30  单个栈和stqueue实现双向队列，不多说
+'''
+
+class double_queue_with_stack(object):
+    '''
+    @brief  1.4.31  使用三个栈实现双向队列
+    '''
+    def __init__(self):
+        super(double_queue_with_stack, self).__init__()
+
+
+def secret_number(n, value):
+    '''
+    @brief  1.4.34  每次猜测一个1-n的数，每次系统会反馈改数离目标数远还是近，使用O(2logn)和O(logn)算法实现
+    @param  value   目标值，假设程序不知道
+    '''
 if __name__ == '__main__':
     pass

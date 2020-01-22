@@ -51,6 +51,48 @@ def binary_search(l:list, start:int, end:int, target:int, hook_func=None) -> int
 
     return -1       #没有找到对应的元素
 
+
+def binary_search_constrain(l, start, end, value):
+    '''
+    @brief  不适用乘法和除法，只允许使用加法和减法的二分查找法
+    @param  l   list
+    @param  start   起始位置
+    @param  end     结束位置
+    @param  value   目标查询值
+    @return     目标的index
+    @note:  使用斐波那契数列作为增量
+    '''
+    def fab(val):
+        '''
+        @brief  返回斐波那契数列数
+        @param  val    上限
+        @param  
+        '''
+        ret = [1, 1]
+        while True:
+            cur = ret[-1] + ret[-2]
+            if cur > val:
+                return cur
+            
+            ret.append(cur)
+        
+    left = 0
+    right = end - start
+    while left <= right:
+        mid = left + fab(right - left)
+        if l[mid] == value:
+            return mid
+        elif l[mid] > value:
+            right = mid - 1
+        else:
+            left = mid + 1
+    
+    return -1
+    
+        
+    
+    
+
 def main():
     from tools import list_tools
 
