@@ -1,5 +1,6 @@
 from src.search import binary_search
 import sys
+from src.basic import stack
 
 
 def three_sum_force(l, target):
@@ -355,18 +356,22 @@ def binary_search_rational(l, value):
 
 def single_egg(n):
     '''
-    @brief  一个鸡蛋判断鸡蛋不摔坏的楼层，O(F),F为目标楼层
+    @brief  1.4.24 一个鸡蛋判断鸡蛋不摔坏的楼层，O(F),F为目标楼层
     @param  n   楼层数目
     @return 目标楼层F
+    @note   一层一层的试
     '''
-    pass
+    
     
 
 def double_egg(n):
     '''
-    @brief  两个鸡蛋判断楼层，O(cF^1/2)
+    @brief  1.4.25 两个鸡蛋判断楼层，O(cF^1/2)
     @param  n   楼层高度
     @return 目标楼层F
+    @note   https://www.jianshu.com/p/165570d1696a
+    14次
+    [14, 27, 39, 50, 60, 69, 77, 84, 90, 95, 99, 100]
     '''
     pass
     
@@ -381,11 +386,104 @@ def double_egg(n):
 class double_queue_with_stack(object):
     '''
     @brief  1.4.31  使用三个栈实现双向队列
+    @note   left和right分别作为left和right操作栈，mid作为缓冲栈进行元素的调整,mid_type表示栈中元素类型，false表示为left的元素否则为right的元素
     '''
     def __init__(self):
         super(double_queue_with_stack, self).__init__()
-
-
+        self.left = stack.stack()
+        self.right = stack.stack()
+        self.mid = stack.stack()
+        self.mid_type = True     
+        self.len = 0
+        
+    def push_left(self, item):
+        self.left.push(item)
+        self.len += 1
+        
+    def pop_left(self):
+        if self.empty():
+            return None
+        else:
+            if not self.left.empty() and not self.mid.empty() and not self.mid_type:
+                self.len -= 1
+                return self.mid.pop()
+            elif not self.left.empty() and self.mid.empty() and not self.mid_type:
+                self.mid_type = False
+                while not self.left.empty():
+                    self.mid.push(self.left.pop())
+                self.len -= 1
+                return self.mid.pop()
+            elif not self.left.empty() and not self.mid.empty() and self.mid_type:
+                #mid  --> left
+                #right --> mid
+                #left--> mid
+                #mid --> right
+                count = 0
+                while not self.mid.empty():
+                    self.left.push(self.mid.pop())
+                    count += 1    
+                
+                while not self.right.empty():
+                    self.mid.push(self.right.pop())
+                    
+                while count != 0:
+                    count -= 1
+                    self.mid.push(self.left.pop())
+                    
+                while not self.mid.empty():
+                    self.right.push(self.mid.pop())
+                    
+                return self.pop_left()
+            elif self.left.empty() and self.mid.empty() and not self.right.empty():
+                self.pop_right()
+                
+    def push_right(self, item):
+        self.right.push(item)
+        self.len += 1
+        
+    def pop_right(self):
+        if self.empty():
+            return None
+        else:
+            if not self.right.empty() and not self.mid.empty() and self.mid_type:
+                self.len -= 1
+                return self.mid.pop()
+            elif not self.right.empty() and self.mid.empty() and self.mid_type:
+                self.mid_type = True
+                while not self.right.empty():
+                    self.mid.push(self.right.pop())
+                self.len -= 1
+                return self.mid.pop()
+            elif not self.right.empty() and not self.mid.empty() and not self.mid_type:
+                #mid  --> right
+                #left --> mid
+                #right--> mid
+                #mid --> left
+                count = 0
+                while not self.mid.empty():
+                    self.right.push(self.mid.pop())
+                    count += 1    
+                
+                while not self.left.empty():
+                    self.mid.push(self.left.pop())
+                    
+                while count != 0:
+                    count -= 1
+                    self.mid.push(self.right.pop())
+                    
+                while not self.mid.empty():
+                    self.left.push(self.mid.pop())
+                    
+                return self.pop_right()
+            elif self.right.empty() and self.mid.empty() and not self.left.empty():
+                self.pop_left()
+        
+    def size(self):
+        return self.len
+        
+    def empty(self):
+        return 0 == self.size()
+    
 def secret_number(n, value):
     '''
     @brief  1.4.34  每次猜测一个1-n的数，每次系统会反馈改数离目标数远还是近，使用O(2logn)和O(logn)算法实现
