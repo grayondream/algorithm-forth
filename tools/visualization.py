@@ -61,7 +61,6 @@ def search_visualization_hook(data, start, mid, end, target, count):
     img = np.zeros((h, w, 3), dtype=np.uint8)
     img = img + 255
     
-    
     for i in range(len(data)):
         color = rgb2bgr((240,121,81))
         liner = -1
@@ -88,6 +87,71 @@ def search_visualization_hook(data, start, mid, end, target, count):
     cv2.imwrite(os.path.join(path, str(count) + '.png'), img)
 
 
+def sort_visualization_hook(data, indexi, indexj, count, desc, img_ratio=20):
+    '''
+    @brief  可视化相关hook函数，暂时未想到完全和API脱离的实现，由于如果按照遍历的方式生成图片，图片生成太多，现在设置img_ratio进行图片筛选
+    @param  data    数据域
+    @param  indexi
+    @param  indexj
+    @param  count   用来进行图片的记名
+    @param  desc    描述信息
+    '''
+    if count % img_ratio != 0:
+        return
+        
+    h, w, v_border, w_border = 600, 800, 100, 5   #长宽边界,opencv左上角为0，0
+    gap_ratio = (2,1)   #设置gap的比例,数据的条目宽度和之间的间隔只比
+    
+    ratio = (h - v_border) / max(data)
+    item_w = ((w - w_border)/len(data))
+    item_width = int(item_w * gap_ratio[0]/sum(gap_ratio))
+    item_gap = int(item_w * gap_ratio[1]/sum(gap_ratio))
+
+    #border修正
+    w_border = int( (w - (item_width + item_gap) * len(data)) / 2)
+    
+    img = np.zeros((h, w, 3), dtype=np.uint8)
+    img = img + 255
+    
+    for i in range(len(data)):
+        color = rgb2bgr((240,121,81))
+        liner = -1
+        cur_h = int(data[i] * ratio)
+        minxy = (w_border + i * (item_width + item_gap), h - cur_h)
+        maxxy = (w_border + i * (item_gap + item_width) + item_width, h)
+        if indexi == i:
+            liner = -1
+            color = rgb2bgr((97,134,163))
+        elif indexj == i:
+            liner = -1
+            color = rgb2bgr((97,134,163))
+        else:
+            color = rgb2bgr((240,121,81))
+            liner = -1
+        
+        cv2.rectangle(img, minxy, maxxy, color, liner)
+        
+    path = './img/' + desc
+    file_tools.makesure_path(path)
+    cv2.imwrite(os.path.join(path, str(count) + '.png'), img)
+
+
+def bubble_sort_visualization(data, i, j, count):
+    sort_visualization_hook(data, i, j, count, 'bubble_sort')
+    
+
+def selection_sort_visualization(data, i, j, count):
+    sort_visualization_hook(data, i, j, count, 'selection_sort')
+    
+    
+def insert_sort_visualization(data, i, j, count):
+    sort_visualization_hook(data, i, j, count, 'insert_sort')
+    
+    
+def shell_sort_visualization(data, i, j, count):
+    sort_visualization_hook(data, i, j, count, 'shell_sort', img_ratio=1)
+    
+    
 def main():
     src = '/home/altas/Pictures/imgs'
     target = '/home/altas/Pictures/1.gif'

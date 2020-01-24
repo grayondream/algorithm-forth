@@ -6,11 +6,13 @@ def insert_sort(l, start, end, hook_func=None):
     @param  end 结束位置
     @param  hook_func   hook函数
     '''
+    count = 0
     for i in range(start + 1, end):
         j = min(end - 1, i + 1)
-        while j > start and l[j - 1] < l[j]:
+        while j > start and l[j - 1] > l[j]:
             if hook_func is not None:
-                hook_func(l, i, j)
+                hook_func(l, i, j, count)
+                count += 1
                 
             tmp = l[j]
             l[j] = l[j - 1]

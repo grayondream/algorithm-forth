@@ -6,10 +6,13 @@ def bubble_sort(l, start, end, hook_func=None):
     @param  end 结束位置
     @param  hook_func   进行可视化的函数
     '''
+    count = 0
     for i in range(start, end):
         for j in range(i + 1, end):
             if hook_func is not None:
-                hook_func(l, i, j)
+                hook_func(l, i, j, count)
+                count += 1
+                
             if l[j] < l[i]:
                 tmp = l[i]
                 l[i] = l[j]

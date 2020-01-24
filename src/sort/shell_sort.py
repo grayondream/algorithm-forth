@@ -9,13 +9,15 @@ def shell_sort(l, start, end, hook_func=None):
     k = 1
     while int((end - start)/3) > k:
         k = 3*k + 1
-        
+    
+    count = 0
     while k >= 1:
         for i in range(start, end):
             j = i
             while j >= k and l[j] < l[j - k]:
                 if hook_func is not None:
-                    hook_func(l, i, j)
+                    hook_func(l, i, j, count)
+                    count += 1
                     
                 tmp = l[j]
                 l[j] = l[j - k]

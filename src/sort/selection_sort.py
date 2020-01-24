@@ -6,16 +6,18 @@ def selection_sort(l, start, end, hook_func=None):
     @param  end 结束位置
     @param  hook_func   进行可视化的函数
     '''
+    count = 0
     for i in range(start, end):
+        minindex = i
         for j in range(i + 1, end):
             if hook_func is not None:
-                hook_func(l, i, j)
+                hook_func(l, i, j, count)
+                count += 1
                 
-            mid = i
-            if l[mid] > l[j]:
-                mid = j
+            if l[minindex] > l[j]:
+                minindex = j
             
-        tmp = l[mid]
-        l[mid] = l[i]
+        tmp = l[minindex]
+        l[minindex] = l[i]
         l[i] = tmp
     
