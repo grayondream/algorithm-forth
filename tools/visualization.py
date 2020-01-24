@@ -2,6 +2,9 @@ import imageio
 import os
 from matplotlib import pyplot as plt
 from tools import file_tools
+import cv2
+import numpy as np
+
 
 def generate_gif(file_list:list, target_file, fps=1):
     '''
@@ -26,6 +29,14 @@ def generate_gif_dir(path:str, target_file, fps=1):
     generate_gif(file_list, target_file, fps=fps)
 
 
+def rgb2bgr(rgb):
+    '''
+    @brief  将rgb颜色转换成bgr
+    @return bgr
+    '''
+    return (rgb[2], rgb[1], rgb[0])
+    
+    
 def search_visualization_hook(data, start, mid, end, target, count):
     '''
     @brief  可视化相关hook函数，暂时未想到完全和API脱离的实现
@@ -36,25 +47,46 @@ def search_visualization_hook(data, start, mid, end, target, count):
     @param  target  目标值
     @param  count   用来统计当前算法调用了多少次
     '''
-    plt.figure()
-    color_list = []
+    h, w, v_border, w_border = 600, 800, 100, 5   #长宽边界,opencv左上角为0，0
+    gap_ratio = (2,1)   #设置gap的比例,数据的条目宽度和之间的间隔只比
+    
+    ratio = (h - v_border) / max(data)
+    item_w = ((w - w_border)/len(data))
+    item_width = int(item_w * gap_ratio[0]/sum(gap_ratio))
+    item_gap = int(item_w * gap_ratio[1]/sum(gap_ratio))
+
+    #border修正
+    w_border = int( (w - (item_width + item_gap) * len(data)) / 2)
+    
+    img = np.zeros((h, w, 3), dtype=np.uint8)
+    img = img + 255
+    
+    
     for i in range(len(data)):
-        if start == i:
-            color_list.append('r')
+        color = rgb2bgr((240,121,81))
+        liner = -1
+        cur_h = int(data[i] * ratio)
+        minxy = (w_border + i * (item_width + item_gap), h - cur_h)
+        maxxy = (w_border + i * (item_gap + item_width) + item_width, h)
+        if mid == i:
+            liner = -1
+            color = rgb2bgr((97,134,163))
+        elif start == i:
+            liner = -1
+            color = rgb2bgr((168,61,103))
         elif end == i:
-            color_list.append('r')
+            liner = -1
+            color = rgb2bgr((168,61,103))
         else:
-            color_list.append('black')
-
-    plt.text(0,max(data),str(data[:10]) + '...')
-    plt.text(0,max(data) - 10,"start=%d,end=%d" % (start, end))
-    plt.text(0,max(data) - 20,"target=%d" % target)
-
-    plt.bar(range(len(data)), data, color=color_list)
-
-    path = '/home/altas/altas/algorithm/algorithm-forth/img/binary_search'
+            color = rgb2bgr((240,121,81))
+            liner = -1
+        
+        cv2.rectangle(img, minxy, maxxy, color, liner)
+        
+    path = './img/binary_search'
     file_tools.makesure_path(path)
-    plt.savefig(os.path.join(path, str(count) + '.png'))
+    cv2.imwrite(os.path.join(path, str(count) + '.png'), img)
+
 
 def main():
     src = '/home/altas/Pictures/imgs'
