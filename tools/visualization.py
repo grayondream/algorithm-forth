@@ -12,6 +12,8 @@ def generate_gif(file_list:list, target_file, fps=1):
     @param  file_list   图片的路径列表
     @param  target_file 目标图片路径
     @param  fps         顾名思义
+    @note   
+            TODO:生成的gif有些问题，会出现之前图像的影子，不知道是不是一次性送进去300多张图片的问题
     '''
     img_list = [imageio.imread(file) for file in file_list]
     imageio.mimsave(target_file, img_list, fps=fps)
