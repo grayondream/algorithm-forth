@@ -29,7 +29,7 @@ def test_sort():
     
 
 def test_sort_preformance():
-    sort_funcs = [bubble_sort.bubble_sort, insert_sort.insert_sort, shell_sort.shell_sort, selection_sort.selection_sort]
+    sort_funcs = [bubble_sort.bubble_sort, insert_sort.insert_sort, shell_sort.shell_sort, selection_sort.selection_sort, insert_sort.insert_sort_II]
     sorted = True
     reverse = True
     
