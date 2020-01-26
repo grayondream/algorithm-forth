@@ -7,6 +7,12 @@ class queue(object):
         super(queue, self).__init__()
         self._data = []
 
+    def front(self):
+        '''
+        @brief  获取对头的元素
+        '''
+        return self._data[0]
+        
     def enqueue(self, item):
         self._data.append(item)
 
