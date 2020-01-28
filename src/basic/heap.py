@@ -10,11 +10,8 @@ def swim(l, left, right, k):
     @param  left    当前元素的左边界,left处的元素为根
     @param  right   当前元素的右边界
     @param  k       当前进行上浮的元素
+    @note   上浮从下到上
     '''
-    while k > left and l[left + int(k/2)] < l[k]:
-        l[k], l[left + int(k/2)] = l[left + int(k/2)], l[k]
-        k = left + int(k/2)
-    
     
 def sink(l, left, right, k):
     '''
@@ -22,9 +19,8 @@ def sink(l, left, right, k):
     @param  left    当前元素的左边界，left处的元素为根
     @param  right   当前元素的右边界
     @param  k       当前进行进行上浮的元素
+    @note   从上到下
     '''
-    while 2 * k < right:
-        pass
     
     
 class max_queue(abc.ABCMeta):
