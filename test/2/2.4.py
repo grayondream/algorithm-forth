@@ -11,6 +11,11 @@ import src.basic import heap
 '''
 
 
+'''
+2.4.23  多路堆，见src.basic.heap中的swim_nway和sink_nway
+'''
+
+
 def cube_sum(n):
     '''
     @brief  2.4.25按顺序打印所有a^3+b^3的值,a in [0,n], b in [0,n]
@@ -35,6 +40,26 @@ def cube_sum(n):
     
         
 '''
-2.4.26  见sort.basic.heap中的sink_im, swim_im
+2.4.26  见src.basic.heap中的sink_im, swim_im
 '''
+
+
+'''
+2.4.29  见src.basic.heap中的min_max_queue
+'''
+    
+    
+class medium_heap(object):
+    '''
+    @brief 2.4.30   小跟堆维护大于midum的数字，大根堆维护小于medium的数字
+    TODO:unkonwn
+    '''
+    def __init__(self):
+        super(midum_heap, self).__init__()
+        self.min_heap = []
+        self.max_heap = []
+            
+    def insert(self, item):
+        self.min_heap 
+        
     
