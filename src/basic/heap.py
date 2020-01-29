@@ -88,6 +88,57 @@ def sink_im(l, left, right, k):
     
     l[k] = sent
     
+    
+def swim_nway(l, left, right, k, n):
+    '''
+    @brief  nway堆，堆的构造和普通堆相同，在进行元素交换时选择线性搜索找到的第一个元素，也可以采用binary_search，问题是如何组织元素
+    @param  l   list
+    @param  left
+    @param  right
+    @param  n   n-way
+    @param  k   当前元素标签
+    @note   child   k   parent  floor((k - 1)/n)
+    '''
+    sent = l[k]
+    parent = int((k-1)/n)
+    while k != left and l[parent] < l[k]:
+        l[k] = l[parent]
+        k = parent
+        parent = int((k-1)/n)
+        
+    l[k] = sent
+    
+    
+def sink_nway(l, left, right, n):
+    '''
+    @brief  nway堆，堆的构造和普通堆相同，在进行元素交换时选择线性搜索找到的第一个元素，也可以采用binary_search，问题是如何组织元素
+    @param  l   list
+    @param  left
+    @param  right
+    @param  n   n-way
+    @note   parent  k   child   n*k+1~n*k+n
+    '''
+    def find_first_less(l, k, n):
+        '''
+        @brief  找到第一个小于当前元素l[k]的子结点的下标
+        @param  l   list
+        @param  k   当前元素的下表
+        @param  n   n-way
+        @return 第一个小于l[k]的index
+        '''
+        for i in range(1, n + 1):
+            if l[k] < l[i]:
+                return i
+                
+        return -1
+    sent = l[k]
+    child = find_first_less(l, k, n)
+    while k < right and child != -1:
+        l[child] = l[k]
+        k = child
+        child = find_first_less(l, k, n)
+    
+    
 def is_big_heap(l, left, right):
     '''
     @brief  判断是否为大根堆
