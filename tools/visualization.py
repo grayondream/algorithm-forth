@@ -154,6 +154,22 @@ def shell_sort_visualization(data, i, j, count):
     sort_visualization_hook(data, i, j, count, 'shell_sort', img_ratio=1)
     
     
+def merge_sort_down2top_visualization(data, i, j, count):
+    sort_visualization_hook(data, i, j, count, 'merge_sort_down2top', img_ratio=1)
+    
+    
+def merge_sort_top2down_visualization(data, i, j, count):
+    sort_visualization_hook(data, i, j, count, 'merge_sort_top2down', img_ratio=1)
+    
+    
+def quick_sort_visualization(data, i, j, count):
+    sort_visualization_hook(data, i, j, count, 'quick_sort', img_ratio=1)
+    
+    
+def heap_sort_visualization(data, i, j, count):
+    sort_visualization_hook(data, i, j, count, 'heap_sort', img_ratio=1)
+
+
 def main():
     src = '/home/altas/Pictures/imgs'
     target = '/home/altas/Pictures/1.gif'

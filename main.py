@@ -1,12 +1,15 @@
 from tools import list_tools, visualization, performance
 from src.search import binary_search
-from src.sort import bubble_sort, insert_sort, shell_sort, selection_sort
+from src.sort import bubble_sort, insert_sort, shell_sort, selection_sort, merge_sort, quick_sort, heap_sort
 import random
 import os
 from matplotlib import pyplot as plt
 
 
-def test_binary_search():
+def test_search():
+    '''
+    @brief  查找算法测试
+    '''
     for i in range(1):
         l = list_tools.generate_list(100 , 1, 100, True)
         value = random.randint(0, 100)
@@ -16,19 +19,25 @@ def test_binary_search():
     visualization.generate_gif_dir(os.path.join(path, 'binary_search'), os.path.join(path, 'bin_search.gif'), fps=2)
 
 
-def test_sort():
+def test_sort_visualize():
+    '''
+    @brief  排序算法可视化
+    '''
     l = list_tools.generate_list(100, 1, 100)
     #bubble_sort.bubble_sort(l, 0, len(l), visualization.bubble_sort_visualization)
     #selection_sort.selection_sort(l, 0, len(l), visualization.selection_sort_visualization)
     #insert_sort.insert_sort(l, 0, len(l), visualization.insert_sort_visualization)
-    shell_sort.shell_sort(l, 0, len(l), visualization.shell_sort_visualization)
-    
+    #shell_sort.shell_sort(l, 0, len(l), visualization.shell_sort_visualization)
+    merge_sort.merge_sort_down2top(l, 0, len(l), visualization.merge_sort_down2top_visualization)
     path = './img/'
-    desc = 'shell_sort'
+    desc = 'merge_sort_down2top'
     visualization.generate_gif_dir(os.path.join(path, desc), os.path.join(path, '%s.gif' % desc), fps=20)
     
 
 def test_sort_preformance():
+    '''
+    @brief  不同排序算法性能对比
+    '''
     sort_funcs = [bubble_sort.bubble_sort, insert_sort.insert_sort, shell_sort.shell_sort, selection_sort.selection_sort, insert_sort.insert_sort_II]
     sorted = True
     reverse = True
@@ -54,8 +63,8 @@ def test_sort_preformance():
     
 def main():
     #test_binary_search()
-    #test_sort()
-    test_sort_preformance()
+    test_sort()
+    #test_sort_preformance()
 
 if __name__ == '__main__':
     main()
