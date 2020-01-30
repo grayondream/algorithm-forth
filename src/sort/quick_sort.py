@@ -22,13 +22,13 @@ def partition(l, left, right, hook_func):
             count += 1
             hook_func(l, i, j, count)
             
-        while l[i] < value and i < j:
+        while l[i] <= value and i < j:
             i += 1
         
         while l[j] > value and i < j:
             j -= 1
             
-        if j >= i:
+        if j <= i:
             break
             
         l[i], l[j] = l[j], l[i]
@@ -100,7 +100,7 @@ def partition3way(l, left, right, hook_func):
         else:
             i+= 1
     
-    return lt, gt + 1
+    return lt, gt
         
         
 def quick_sort3way(l, left, right, hook_func=None):

@@ -16,29 +16,28 @@ def merge(l, left, mid, right, hook_func=None):
     tmp = l.copy()
     i = left
     j = mid
-    for k in range(left, right):
-        if hook_func is not None:
-            hook_func(l, left, right, count)
-            global count 
-            count += 1
-            
-        if i < mid and j < right:
-            if tmp[i] < tmp[j]:
-                l[k] = tmp[i]
-                i += 1
-            else:
-                l[k] = tmp[j]
-                j += 1
+    k = left
+    while i < mid and j < right:
+        if tmp[i] < tmp[j]:
+            l[k] = tmp[i]
+            i += 1
         else:
-            while i < mid:
-                l[k] = tmp[i]
-                i += 1
+            l[k] = tmp[j]
+            j += 1
+            
+        k += 1
                 
-            while j < right:
-                l[k] = tmp[j]
-                j += 1
-                
-                
+    while i < mid:
+        l[k] = tmp[i]
+        k += 1
+        i+= 1
+
+    while j < right:
+        l[k] = tmp[j]
+        k += 1
+        j+= 1
+        
+        
 def merge_im(l, left, mid, right, hook_func=None):
     '''
     @brief  合并有已经有序的部分，合并区间[left, mid),[mid, right)
@@ -141,16 +140,21 @@ def merge_sort_down2top(l, start, end, hook_func):
     @param  end
     @param  hook_func   hook操作函数
     '''
-    i = 1
-    j = 0
-    while i < len(l):
-        while j < len(l) - i:
-            merge(l, j, j + i - 1, min(j + 2 * i - 1, len(l) - 1))
-            j += i + i
-        
-        i = 2 * i
+    size = 1    #每一次归并时采用的长度
+    right = None
+    while size < end - start:
+        times = int((end - start)/(2 * size))
+        for i in range(times):
+            left = i * size * 2
+            mid = left + size
+            right = min(mid + size, end)
+            merge(l, left, mid, right, hook_func)
+            
+        size = 2 * size
     
-
+    if right != end:
+        merge(l, start, right, end)
+        
 def merge_sort_top2down_im(l, start, end, hook_func):
     '''
     @brief  自顶向下二路归并排序改进版本
@@ -249,15 +253,16 @@ def merge_sort_alter(l, start, end, hook_func):
     return merge_sort_top2down_alter(l, aux, start, end, hook_func)
     
 
-def merge_mult(l, start, end, hook_func):
+def merge_mult(l, start, mid, end, hook_func):
     '''
     @brief  自顶向下二路归并排序
     @param  l   list
     @param  start
+    @param  mid 
     @param  end
     @param  hook_func
     '''
-    return merge(l, start, end, hook_func)
+    return merge(l, start, mid, end, hook_func)
     
     
 def merge_sort_mult(l, start, end, hook_func=None, n=4):
@@ -269,7 +274,7 @@ def merge_sort_mult(l, start, end, hook_func=None, n=4):
     @param  n   路数
     @param  hook_func   hook操作函数
     '''
-    if start + 1 <= end:
+    if start + 1 < end:
         mid_list = []       #分界点数组
         mid_list.append(start)
         gap = int((end - start)/n)  #需要进行修正如果元素为8个，数组长度为9，需要进行数据调整将八个数据分给千把个空位否则会出选stack overflow
@@ -293,7 +298,7 @@ def merge_sort_mult(l, start, end, hook_func=None, n=4):
             merge_sort_mult(l, mid_list[i], mid_list[i + 1], hook_func, n)
             
         for i in range(1, n):
-            merge_mult(l, mid_list[0], mid_list[i], hook_func)
+            merge_mult(l, mid_list[0], mid_list[i], mid_list[i + 1], hook_func)
             
         
 def next_unsorted(l, start, end):

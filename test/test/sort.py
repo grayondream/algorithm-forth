@@ -2,6 +2,8 @@ from tools import list_tools
 from src import sort
 import time
 from tools import file_tools
+import platform
+from tools.iostream import printw
 
 
 bubble_sort = [sort.bubble_sort.bubble_sort]
@@ -19,7 +21,7 @@ merge_sort = [sort.merge_sort.merge_sort_top2down,
             sort.merge_sort.merge_sort_nature,
             sort.merge_sort.merge_sort_mult,
             sort.merge_sort.merge_sort_top2down_im,
-            sort.merge_sort.merge_sort_top2down_alter]
+            sort.merge_sort.merge_sort_alter]
             
 quick_sort = [sort.quick_sort.quick_sort,
             sort.quick_sort.quick_sort3way,
@@ -54,7 +56,6 @@ def sort_vertify(funcs, count=100, n=100):
         error = 0
         start = time.clock()
         func_name = file_tools.get_func_name(func)
-        print('%s testing...' % func_name)
         for i in range(count):
             data = list_tools.generate_list(n, 0, n)
             data_copy = data.copy()
@@ -64,7 +65,15 @@ def sort_vertify(funcs, count=100, n=100):
                 error += 1
                 
         end = time.clock()
-        print('%20s: failed %03d, successed %03d, ratio:%.2f%%, cost time: %fs' % (func_name, error, count - error, (count - error)/count * 100, end - start))
+        ratio = (count - error)/count * 100
+        line = '%25s: failed %03d, successed %03d, ratio:%03d%s%%, cost time: %fs' % (func_name, error, count - error, int(ratio), ('%.2f' % (ratio - int(ratio)))[1:], end - start)
+        color = None
+        if ratio != 100:
+            color = 'red'
+        else:
+            color = 'green'
+            
+        printw(line, color, None)
 
     
 def main():

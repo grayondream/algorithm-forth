@@ -14,10 +14,7 @@ def vertify_sort_test():
     func = test.sort.get_all()
     count = 2
     n = 10
-    try:
-        test.sort.sort_vertify(func, count, n)    
-    except Exception as e:
-        print(e)
+    test.sort.sort_vertify(func, count, n)    
     
     
 def test_search():
