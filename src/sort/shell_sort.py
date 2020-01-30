@@ -1,3 +1,7 @@
+import math
+from tools import shell_step
+
+
 def shell_sort(l, start, end, hook_func=None):
     '''
     @brief  希尔排序算法
@@ -59,7 +63,38 @@ def shell_sort_custom(l, start, end, k_list, hook_func=None):
         
         k -= 1
     
-
+'''
+下面是采用不同的step序列的shell排序的实现
+'''
+    
+def shell_sort_normal(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start, shell_step.shell_step_normal)
+    shell_sort_custom(l, start, end, k_list, hook_func)
+    
+    
+def shell_sort_poly1(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start, shell_step.shell_step_poly1)
+    shell_sort_custom(l, start, end, k_list, hook_func)
+    
+    
+def shell_sort_poly2(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start, shell_step.shell_step_poly2)
+    shell_sort_custom(l, start, end, k_list, hook_func)
+    
+    
+def shell_sort_poly12(l, start, end, hook_func):
+    '''
+    @brief  这个版本有缺陷，因为k_list有限，元素不能过多
+    '''
+    k_list = shell_step.get_shell_steps(end - start, shell_step.shell_step_poly12)
+    shell_sort_custom(l, start, end, k_list, hook_func)
+    
+    
+def shell_sort_geo(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start, shell_step.shell_step_geo_inc)
+    shell_sort_custom(l, start, end, k_list, hook_func)
+    
+    
 def shell_test(dat, k_list):
     while k_list[len(k_list) - 1] > len(dat):
         del k_list[len(k_list) - 1]

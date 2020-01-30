@@ -140,7 +140,7 @@ def sink_nway(l, left, right, k, n, com_func):
         @return 第一个小于l[k]的index
         '''
         for i in range(1, n + 1):
-            if !com_func(l[k], l[i]):
+            if not com_func(l[k], l[i]):
                 return i
                 
         return -1

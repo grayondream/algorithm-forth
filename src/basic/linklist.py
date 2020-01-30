@@ -14,7 +14,7 @@ class linklist(object):
         '''
         if head.data == value:
             return head
-        else
+        else:
             cur = head
             while cur.next is not None:
                 if cur.next.data == value:

@@ -4,8 +4,22 @@ from src.sort import bubble_sort, insert_sort, shell_sort, selection_sort, merge
 import random
 import os
 from matplotlib import pyplot as plt
+from test import test
 
 
+def vertify_sort_test():
+    '''
+    验证算法的可行性
+    '''
+    func = test.sort.get_all()
+    count = 2
+    n = 10
+    try:
+        test.sort.sort_vertify(func, count, n)    
+    except Exception as e:
+        print(e)
+    
+    
 def test_search():
     '''
     @brief  查找算法测试
@@ -61,10 +75,13 @@ def test_sort_preformance():
     plt.legend()
     plt.show()
     
+    
 def main():
     #test_binary_search()
-    test_sort()
+    #test_sort()
     #test_sort_preformance()
-
+    vertify_sort_test()
+    
+    
 if __name__ == '__main__':
     main()

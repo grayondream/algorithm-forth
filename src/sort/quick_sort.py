@@ -1,6 +1,6 @@
 from src.sort import insert_sort
 import random
-from basic import stack
+from src.basic import stack
 
 
 count = 0
