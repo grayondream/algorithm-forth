@@ -1,36 +1,33 @@
 def insert_sort(l, start, end, hook_func=None):
     '''
-    @brief  插入排序，排序范围[startm end)
+    @brief  插入排序，排序范围[start, end]
     @param  l   进行排序的list
     @param  start   开始位置
     @param  end 结束位置
     @param  hook_func   hook函数
     '''
     count = 0
-    for i in range(start + 1, end):
-        j = min(end - 1, i + 1)
+    for i in range(start + 1, end + 1):
+        j = min(end, i + 1)
         while j > start and l[j - 1] > l[j]:
             if hook_func is not None:
                 hook_func(l, i, j, count)
                 count += 1
                 
-            tmp = l[j]
-            l[j] = l[j - 1]
-            l[j - 1] = tmp
-            
+            l[j], l[j - 1] = l[j - 1], l[j]
             j -= 1
             
             
 def insert_sort_II(l, start, end, hook_func=None):
     '''
-    @brief  插入排序，排序范围[startm end)，排序时使用哨兵，减少对数组的访问
+    @brief  插入排序，排序范围[start, end]，排序时使用哨兵，减少对数组的访问
     @param  l   进行排序的list
     @param  start   开始位置
     @param  end 结束位置
     @param  hook_func   hook函数
     '''
     count = 0
-    for i in range(start + 1, end):
+    for i in range(start + 1, end + 1):
         tmp = l[i]
         j = i - 1
         while j >= start and l[j] > tmp:

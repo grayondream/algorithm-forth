@@ -4,29 +4,27 @@ from tools import shell_step
 
 def shell_sort(l, start, end, hook_func=None):
     '''
-    @brief  希尔排序算法
+    @brief  希尔排序算法[start, end]
     @param  l   需要进行排序的list
     @param  start   开始位置
     @param  end 结束位置
     @param  hook_func   进行可视化的函数
     '''
     k = 1
-    while int((end - start)/3) > k:
+    size = end - start + 1
+    while int((size/3) > k:
         k = 3*k + 1
     
     count = 0
     while k >= 1:
-        for i in range(start, end):
+        for i in range(start, end + 1):
             j = i
             while j >= k and l[j] < l[j - k]:
                 if hook_func is not None:
                     hook_func(l, i, j, count)
                     count += 1
                     
-                tmp = l[j]
-                l[j] = l[j - k]
-                l[j - k] = tmp
-                
+                l[j], l[j - k] = l[j - k], l[j]
                 j -= k
         
         k = int(k/3)
@@ -34,7 +32,7 @@ def shell_sort(l, start, end, hook_func=None):
 
 def shell_sort_custom(l, start, end, k_list, hook_func=None):
     '''
-    @brief  希尔排序算法使用用户自定义的步长
+    @brief  希尔排序算法使用用户自定义的步长, [start, end]
     @param  l   需要进行排序的list
     @param  start   开始位置
     @param  end 结束位置
@@ -48,17 +46,14 @@ def shell_sort_custom(l, start, end, k_list, hook_func=None):
     k = len(k_list) - 1
     count = 0
     while k >= 0:
-        for i in range(start, end):
+        for i in range(start, end + 1):
             j = i
             while j >= k_list[k] and l[j] < l[j - k_list[k]]:
                 if hook_func is not None:
                     hook_func(l, i, j, count)
                     count += 1
-                    
-                tmp = l[j]
-                l[j] = l[j - k_list[k]]
-                l[j - k_list[k]] = tmp
                 
+                l[j - k_list[k]], l[j] = l[j], l[j - k_list[k]]
                 j -= k_list[k]
         
         k -= 1
@@ -68,17 +63,17 @@ def shell_sort_custom(l, start, end, k_list, hook_func=None):
 '''
     
 def shell_sort_normal(l, start, end, hook_func):
-    k_list = shell_step.get_shell_steps(end - start, shell_step.shell_step_normal)
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_normal)
     shell_sort_custom(l, start, end, k_list, hook_func)
     
     
 def shell_sort_poly1(l, start, end, hook_func):
-    k_list = shell_step.get_shell_steps(end - start, shell_step.shell_step_poly1)
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_poly1)
     shell_sort_custom(l, start, end, k_list, hook_func)
     
     
 def shell_sort_poly2(l, start, end, hook_func):
-    k_list = shell_step.get_shell_steps(end - start, shell_step.shell_step_poly2)
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_poly2)
     shell_sort_custom(l, start, end, k_list, hook_func)
     
     
@@ -86,12 +81,12 @@ def shell_sort_poly12(l, start, end, hook_func):
     '''
     @brief  这个版本有缺陷，因为k_list有限，元素不能过多
     '''
-    k_list = shell_step.get_shell_steps(end - start, shell_step.shell_step_poly12)
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_poly12)
     shell_sort_custom(l, start, end, k_list, hook_func)
     
     
 def shell_sort_geo(l, start, end, hook_func):
-    k_list = shell_step.get_shell_steps(end - start, shell_step.shell_step_geo_inc)
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc)
     shell_sort_custom(l, start, end, k_list, hook_func)
     
     

@@ -31,7 +31,8 @@ quick_sort = [sort.quick_sort.quick_sort,
             sort.quick_sort.quick_sort_II]
             
 heap_sort = [sort.heap_sort.heap_sort]
-all_sorts = [bubble_sort, selection_sort, selection_sort, shell_sort, merge_sort, quick_sort]
+#all_sorts = [bubble_sort, selection_sort, insert_sort, shell_sort, merge_sort, quick_sort]
+all_sorts = [bubble_sort]
 
 
 def get_all():
@@ -59,7 +60,7 @@ def sort_vertify(funcs, count=100, n=100):
         for i in range(count):
             data = list_tools.generate_list(n, 0, n)
             data_copy = data.copy()
-            func(data, 0, len(data), None)
+            func(data, 0, len(data) - 1, None)
             data_copy.sort()
             if data != data_copy:
                 error += 1

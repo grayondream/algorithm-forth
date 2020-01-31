@@ -37,6 +37,8 @@ def is_sorted(l:list)->bool:
 
     return True
 
+
+
 if __name__ == '__main__':
     for i in range(10):
         l = generate_list(10, 0, 20, 1 == i%2)

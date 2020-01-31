@@ -4,20 +4,20 @@ from src.basic import linklist
 
 #归并排序
 count = 0
-def merge(l, left, mid, right, hook_func=None):
+def merge(l, start, mid, end, hook_func=None):
     '''
-    @brief  合并有已经有序的部分，合并区间[left, mid),[mid, right)
+    @brief  合并有已经有序的部分，合并区间[left, mid],[mid + 1, end]
     @param  l   数据
-    @param  left    左边边界
-    @param  right   右边边界
+    @param  start    左边边界
+    @param  end   右边边界
     @param  mid     中间分割点
     @param  hook_func   hook函数
     '''
     tmp = l.copy()
-    i = left
-    j = mid
-    k = left
-    while i < mid and j < right:
+    i = start
+    j = mid + 1
+    k = start
+    while i <= mid and j <= end:
         if tmp[i] < tmp[j]:
             l[k] = tmp[i]
             i += 1
@@ -27,40 +27,40 @@ def merge(l, left, mid, right, hook_func=None):
             
         k += 1
                 
-    while i < mid:
+    while i <= mid:
         l[k] = tmp[i]
         k += 1
         i+= 1
 
-    while j < right:
+    while j <= end:
         l[k] = tmp[j]
         k += 1
         j+= 1
         
         
-def merge_im(l, left, mid, right, hook_func=None):
+def merge_im(l, start, mid, end, hook_func=None):
     '''
-    @brief  合并有已经有序的部分，合并区间[left, mid),[mid, right)
+    @brief  合并有已经有序的部分，合并区间[left, mid],[mid + 1, end]
     @param  l   数据
     @param  left    左边边界
-    @param  right   右边边界
+    @param  end   右边边界
     @param  mid     中间分割点
     @param  hook_func   hook函数
     @note   merge改进当l[mid - 1] < l[mid]表示已经有序
     '''
-    if l[mid - 1] < l[mid]:
+    if l[mid] < l[mid + 1]:
         return
         
     tmp = l.copy()
-    i = left
-    j = mid
-    for k in range(left, right):
+    i = start
+    j = mid + 1
+    for k in range(start, end + 1):
         if hook_func is not None:
-            hook_func(l, left, right, count)
+            hook_func(l, start, end, count)
             global count 
             count += 1
             
-        if i < mid and j < right:
+        if i <= mid and j <= right:
             if tmp[i] < tmp[j]:
                 l[k] = tmp[i]
                 i += 1
@@ -68,40 +68,40 @@ def merge_im(l, left, mid, right, hook_func=None):
                 l[k] = tmp[j]
                 j += 1
         else:
-            while i < mid:
+            while i <= mid:
                 l[k] = tmp[i]
                 i += 1
                 
-            while j < right:
+            while j <= end:
                 l[k] = tmp[j]
                 j += 1
                 
 
-def merge_im_II(l, left, mid, right, hook_func=None):
+def merge_im_II(l, start, mid, end, hook_func=None):
     '''
-    @brief  合并有已经有序的部分，合并区间[left, mid),[mid, right)
+    @brief  合并有已经有序的部分，合并区间[left, mid],[mid + 1, end]
     @param  l   数据
-    @param  left    左边边界
-    @param  right   右边边界
+    @param  start    左边边界
+    @param  end   右边边界
     @param  mid     中间分割点
     @param  hook_func   hook函数
-    @note   merge改进当l[mid - 1] < l[mid]表示已经有序，将后半段按照降序复制到aux中再归并到l中取消对部分边界检测
+    @note   merge改进当l[mid] < l[mid + 1]表示已经有序，将后半段按照降序复制到aux中再归并到l中取消对部分边界检测
     '''
-    if l[mid - 1] < l[mid]:
+    if l[mid] < l[mid + 1]:
         return
         
     aux = [0] * len(l)
-    for i in range(left, mid):
+    for i in range(start, mid + 1):
         aux[i] = l[i]
         
-    for i in range(mid, right):
-        aux[right - i - 1] = l[i]
+    for i in range(mid, end + 1):
+        aux[end - i] = l[i]
         
-    i = left
-    j = right
-    for k in range(left, right):
+    i = start
+    j = end + 1
+    for k in range(start, end):
         if hook_func is not None:
-            hook_func(l, left, right, count)
+            hook_func(l, start, end, count)
             global count 
             count += 1
                 
@@ -122,12 +122,12 @@ def merge_sort_top2down(l, start, end, hook_func):
     @param  end
     @param  hook_func   hook操作函数
     '''
-    if end <= start + 1:
+    if end <= start:
         return
         
     mid = int(start + (end - start)/2)
     merge_sort_top2down(l, start, mid, hook_func)
-    merge_sort_top2down(l, mid, end, hook_func)
+    merge_sort_top2down(l, mid + 1, end, hook_func)
     
     merge(l, start, mid, end, hook_func)
     
@@ -142,8 +142,8 @@ def merge_sort_down2top(l, start, end, hook_func):
     '''
     size = 1    #每一次归并时采用的长度
     right = None
-    while size < end - start:
-        times = int((end - start)/(2 * size))
+    while size < end - start + 1:
+        times = int((end - start + 1)/(2 * size))
         for i in range(times):
             left = i * size * 2
             mid = left + size
@@ -153,7 +153,8 @@ def merge_sort_down2top(l, start, end, hook_func):
         size = 2 * size
     
     if right != end:
-        merge(l, start, right, end)
+        merge(l, start, right - 1, end)
+        
         
 def merge_sort_top2down_im(l, start, end, hook_func):
     '''
@@ -164,7 +165,7 @@ def merge_sort_top2down_im(l, start, end, hook_func):
     @param  hook_func   hook操作函数
     @note   当数据规模足够小时使用插入排序进行排序
     '''
-    if end <= start:
+    if end < start:
         return
         
     if end - start < 16:            #magic number
@@ -173,34 +174,34 @@ def merge_sort_top2down_im(l, start, end, hook_func):
         
     mid = int(start + (end - start)/2)
     merge_sort_top2down(l, start, mid, hook_func)
-    merge_sort_top2down(l, mid, end, hook_func)
+    merge_sort_top2down(l, mid + 1, end, hook_func)
     
     merge_im(l, start, mid, end, hook_func)
     
     
-def merge_alter(l, aux, left, mid, right, hook_func=None):
+def merge_alter(l, aux, start, mid, end, hook_func=None):
     '''
     @brief  合并有已经有序的部分，合并区间[left, mid),[mid, right)
     @param  l   数据
     @param  aux     辅助分区
-    @param  left    左边边界
-    @param  right   右边边界
+    @param  start    左边边界
+    @param  end   右边边界
     @param  mid     中间分割点
     @param  hook_func   hook函数
     @note   merge改进当l[mid - 1] < l[mid]表示已经有序，将后半段按照降序复制到aux中再归并到l中取消对部分边界检测，交换使用aux和l
     '''
-    if l[mid - 1] < l[mid]:
+    if l[mid] < l[mid + 1]:
         return
         
-    i = left
+    i = start
     j = mid
-    for k in range(left, right):
+    for k in range(start, end + 1):
         if hook_func is not None:
-            hook_func(l, left, right, count)
+            hook_func(l, start, end, count)
             global count 
             count += 1
             
-        if i < mid and j < right:
+        if i <= mid and j <= end:
             if aux[i] < aux[j]:
                 l[k] = aux[i]
                 i += 1
@@ -208,11 +209,11 @@ def merge_alter(l, aux, left, mid, right, hook_func=None):
                 l[k] = aux[j]
                 j += 1
         else:
-            while i < mid:
+            while i <= mid:
                 l[k] = aux[i]
                 i += 1
                 
-            while j < right:
+            while j <= end:
                 l[k] = aux[j]
                 j += 1
                 
@@ -226,7 +227,7 @@ def merge_sort_top2down_alter(l, aux, start, end, hook_func):
     @param  end
     @param  hook_func   hook操作函数
     '''
-    if end <= start:
+    if end < start:
         return
         
     if end - start < 16:            #magic number
@@ -235,7 +236,7 @@ def merge_sort_top2down_alter(l, aux, start, end, hook_func):
         
     mid = int(start + (end - start)/2)
     merge_sort_top2down_alter(l, aux, start, mid, hook_func)
-    merge_sort_top2down_alter(l, aux, mid, end, hook_func)
+    merge_sort_top2down_alter(l, aux, mid + 1, end, hook_func)
     
     merge_alter(l,aux, start, mid, end, hook_func)
     l, aux = aux, l
@@ -308,11 +309,11 @@ def next_unsorted(l, start, end):
     @param  start   开始位置
     @param  end 结束位置
     '''
-    for i in range(start + 1, end):
+    for i in range(start + 1, end + 1):
         if l[i - 1] > l[i]:
             return i
             
-    return end           #已经全部排序
+    return end + 1          #已经全部排序
     
     
 def merge_sort_nature(l, start, end, hook_func=None):
@@ -326,7 +327,7 @@ def merge_sort_nature(l, start, end, hook_func=None):
     left = start
     mid = next_unsorted(l, start, end)
     right = mid
-    while end != mid and end != right:        
+    while end + 1 != mid and end != right:        
         right = next_unsorted(l, mid, end)
         merge(l, left, mid, right, hook_func)
         

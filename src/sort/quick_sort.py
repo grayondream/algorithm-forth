@@ -13,28 +13,29 @@ def partition(l, left, right, hook_func):
     @param  hook_func   hook函数
     @return 锚点
     '''
+    if (right - left) < 2:
+        return left
+    
     value = l[left]
-    i = left + 1
+    i = left
     j = right - 1
-    while True:
+    while i < j:
         if hook_func is not None:
             global count    
             count += 1
             hook_func(l, i, j, count)
             
-        while l[i] <= value and i < j:
+        while l[i] <= l[left] and i < j:
             i += 1
         
-        while l[j] > value and i < j:
+        l[j] = l[i]
+        while l[j] > l[left] and i < j:
             j -= 1
             
-        if j <= i:
-            break
-            
-        l[i], l[j] = l[j], l[i]
+        l[i] = l[j]
         
-    l[left],l[j] = l[j], l[left]
-    return j
+    l[i] = value
+    return i + 1
     
     
 def quick_sort(l, left, right, hook_func=None):
@@ -45,12 +46,15 @@ def quick_sort(l, left, right, hook_func=None):
     @param  right   右边边界
     @param  hook_func   hook用function
     '''
-    if left >= right:
+    if right - left < 2:
         return
         
     anchor = partition(l, left, right, hook_func)
+    if anchor == right or anchor == left:
+        return
+        
     quick_sort(l, left, anchor)        
-    quick_sort(l, anchor + 1, right)  
+    quick_sort(l, anchor, right)  
     
     
 def quick_sort_II(l, left, right, hook_func=None):

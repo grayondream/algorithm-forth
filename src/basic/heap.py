@@ -16,34 +16,34 @@ def bigger(rst, snd):
     return rst > snd
     
     
-def swim(l, left, right, k, com_func):
+def swim(l, start, end, k, com_func):
     '''
-    @brief  l       当前进行上浮的列表[left, right)，区间内的元素应该以left为根节点构成一棵树
-    @param  left    当前元素的左边界,left处的元素为根
-    @param  right   当前元素的右边界
+    @brief  l       当前进行上浮的列表[start, end]，区间内的元素应该以start为根节点构成一棵树
+    @param  start    当前元素的左边界,start处的元素为根
+    @param  end   当前元素的右边界
     @param  k       当前进行上浮的元素
-    @param  com_func    比较函数
+    @param  com_func    比较函
     @note   上浮从下到上，大根堆, parent = floor((i-1)/2)，具体构造大根堆还是小根堆完全由用户指定的com_func确定，bigger为大根堆，less为小根堆
     '''
     parent = int((k - 1)/2)
-    while k != left and com_func(l[parent], l[k]):
+    while k != start and com_func(l[parent], l[k]):
         l[parent], l[k] = l[k], l[parent]
         k = parent
         parent = int((k - 1)/2)
         
         
-def swim_im(l, left, right, k, com_func):
+def swim_im(l, start, end, k, com_func):
     '''
-    @brief  l       当前进行上浮的列表[left, right)
-    @param  left    当前元素的左边界,left处的元素为根
-    @param  right   当前元素的右边界
+    @brief  l       当前进行上浮的列表[start, end)
+    @param  start    当前元素的左边界,start处的元素为根
+    @param  end   当前元素的右边界
     @param  k       当前进行上浮的元素
     @param  com_func    比较函数
     @note   上浮从下到上 parent = floor((i-1)/2)，使用哨兵较少内存的访问
     '''
     parent = int((k - 1)/2)
     sent = l[k]
-    while k != left and com_func(l[parent], l[k]):
+    while k != start and com_func(l[parent], l[k]):
         l[k] = l[parent]
         k = parent
         parent = int((k - 1)/2)
@@ -51,16 +51,16 @@ def swim_im(l, left, right, k, com_func):
     l[k] = sent
         
         
-def sink(l, left, right, k, com_func):
+def sink(l, start, end, k, com_func):
     '''
-    @brief  l       当前进行下沉的列表[left, right)
-    @param  left    当前元素的左边界，left处的元素为根
-    @param  right   当前元素的右边界
+    @brief  l       当前进行下沉的列表[start, end]
+    @param  start    当前元素的左边界，start处的元素为根
+    @param  end   当前元素的右边界
     @param  k       当前进行进行下沉的元素
     @param  com_func    比较函数
     @note   从上到下,左孩子的index为2*i+1, 右孩子的index为2*i+2
     '''
-    while k < right:
+    while k < end:
         left_child = 2 * k + 1
         right_child = 2 * k + 2
         i = left_child
@@ -74,16 +74,16 @@ def sink(l, left, right, k, com_func):
         k = i
     
 
-def sink_im(l, left, right, k):
+def sink_im(l, start, end, k, com_func):
     '''
-    @brief  l       当前进行下沉的列表[left, right)
-    @param  left    当前元素的左边界，left处的元素为根
-    @param  right   当前元素的右边界
+    @brief  l       当前进行下沉的列表[start, end)
+    @param  start    当前元素的左边界，start处的元素为根
+    @param  end   当前元素的右边界
     @param  k       当前进行进行下沉的元素
     @note   从上到下，大根堆，左孩子的index为2*i+1, 右孩子的index为2*i+2,使用哨兵减少内存的访问
     '''
     sent = l[k]
-    while k < right:
+    while k < end:
         left_child = 2 * k + 1
         right_child = 2 * k + 2
         i = left_child
@@ -99,12 +99,12 @@ def sink_im(l, left, right, k):
     l[k] = sent
     
     
-def swim_nway(l, left, right, k, n, com_func):
+def swim_nway(l, start, end, k, n, com_func):
     '''
     @brief  nway堆，堆的构造和普通堆相同，在进行元素交换时选择线性搜索找到的第一个元素，也可以采用binary_search，问题是如何组织元素
     @param  l   list
-    @param  left
-    @param  right
+    @param  start
+    @param  end
     @param  n   n-way
     @param  k   当前元素标签
     @param  com_func    比较函数
@@ -112,7 +112,7 @@ def swim_nway(l, left, right, k, n, com_func):
     '''
     sent = l[k]
     parent = int((k-1)/n)
-    while k != left and com_func(l[k], l[parent]):
+    while k != start and com_func(l[k], l[parent]):
         l[k] = l[parent]
         k = parent
         parent = int((k-1)/n)
@@ -120,12 +120,12 @@ def swim_nway(l, left, right, k, n, com_func):
     l[k] = sent
     
     
-def sink_nway(l, left, right, k, n, com_func):
+def sink_nway(l, start, end, k, n, com_func):
     '''
     @brief  nway堆，堆的构造和普通堆相同，在进行元素交换时选择线性搜索找到的第一个元素，也可以采用binary_search，问题是如何组织元素
     @param  l   list
-    @param  left
-    @param  right
+    @param  start
+    @param  end
     @param  n   n-way
     @param  k   当前元素下表
     @param  com_func    比较函数
@@ -146,7 +146,7 @@ def sink_nway(l, left, right, k, n, com_func):
         return -1
     sent = l[k]
     child = find_first_less(l, k, n)
-    while k < right and child != -1:
+    while k < end and child != -1:
         l[child] = l[k]
         k = child
         child = find_first_less(l, k, n)
@@ -154,52 +154,52 @@ def sink_nway(l, left, right, k, n, com_func):
     l[k] = sent
     
     
-def is_big_heap(l, left, right):
+def is_big_heap(l, start, end):
     '''
     @brief  判断是否为大根堆
     @param  l   list
-    @param  left    根节点   
-    @param  right   边界
+    @param  start    根节点   
+    @param  end   边界
     '''
-    left_child = 2 * left + 1
-    right_child = 2 * left + 2
-    if left_child >= right and right_child >= right:
+    left_child = 2 * start + 1
+    right_child = 2 * start + 2
+    if left_child >= end and right_child >= end:
         return True
         
-    if left_child >= right and l[right_child] > l[left]:
+    if left_child >= end and l[right_child] > l[start]:
         return False
     
-    if right_child >= right and l[left_child] > l[left]:
+    if right_child >= end and l[left_child] > l[start]:
         return False
     
-    if l[left_child] > l[left] or l[right_child] > l[left]:
+    if l[left_child] > l[start] or l[right_child] > l[start]:
         return False
         
-    return is_big_heap(l, left_child, right) and is_big_heap(l, right_child, right)
+    return is_big_heap(l, left_child, end) and is_big_heap(l, right_child, end)
     
     
-def is_small_heap(l, left, right):
+def is_small_heap(l, start, end):
     '''
     @brief  判断是否为小根堆
     @param  l   list
-    @param  left    
-    @param  right
+    @param  start    
+    @param  end
     '''
-    left_child = 2 * left + 1
-    right_child = 2 * left + 2
-    if left_child >= right and right_child >= right:
+    left_child = 2 * start + 1
+    right_child = 2 * start + 2
+    if left_child >= end and right_child >= end:
         return True
         
-    if left_child >= right and l[right_child] < l[left]:
+    if left_child >= end and l[right_child] < l[start]:
         return False
     
-    if right_child >= right and l[left_child] < l[left]:
+    if right_child >= end and l[left_child] < l[start]:
         return False
     
-    if l[left_child] < l[left] or l[right_child] < l[left]:
+    if l[left_child] < l[start] or l[right_child] < l[start]:
         return False
         
-    return is_big_heap(l, left_child, right) and is_big_heap(l, right_child, right)
+    return is_big_heap(l, left_child, end) and is_big_heap(l, right_child, end)
     
     
 class max_queue(object):
