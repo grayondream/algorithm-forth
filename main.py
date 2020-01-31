@@ -38,6 +38,18 @@ def vertify_sort_test():
     test.sort.sort_vertify(func, count, n)    
     
     
+def test_sort_visualize():
+    '''
+    @brief  排序算法可视化
+    '''
+    n = 100
+    sort_func = merge_sort.merge_sort_down2top
+    visual_func = visualization.bubble_sort_visualization
+    path = './img'
+    fps = 20
+    test.sort.sort_visualization(n, sort_func, visual_func, path, fps)
+    
+    
 def test_search():
     '''
     @brief  查找算法测试
@@ -51,20 +63,6 @@ def test_search():
     visualization.generate_gif_dir(os.path.join(path, 'binary_search'), os.path.join(path, 'bin_search.gif'), fps=2)
 
 
-def test_sort_visualize():
-    '''
-    @brief  排序算法可视化
-    '''
-    l = list_tools.generate_list(100, 1, 100)
-    #bubble_sort.bubble_sort(l, 0, len(l), visualization.bubble_sort_visualization)
-    #selection_sort.selection_sort(l, 0, len(l), visualization.selection_sort_visualization)
-    #insert_sort.insert_sort(l, 0, len(l), visualization.insert_sort_visualization)
-    #shell_sort.shell_sort(l, 0, len(l), visualization.shell_sort_visualization)
-    merge_sort.merge_sort_down2top(l, 0, len(l), visualization.merge_sort_down2top_visualization)
-    path = './img/'
-    desc = 'merge_sort_down2top'
-    visualization.generate_gif_dir(os.path.join(path, desc), os.path.join(path, '%s.gif' % desc), fps=20)
-    
 
 def test_sort_preformance():
     '''
@@ -95,15 +93,8 @@ def test_sort_preformance():
     
     
 def main():
-    #test_binary_search()
-    #test_sort()
-    #test_sort_preformance()
-    try:
-        vertify_sort_test()
-    except Exception as e:
-        print(e)
-
-    
+    #vertify_sort_test()
+    test_sort_visualize()
     
 if __name__ == '__main__':
     main()

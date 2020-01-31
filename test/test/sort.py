@@ -1,9 +1,10 @@
 from tools import list_tools
 from src import sort
 import time
-from tools import file_tools
+from tools import file_tools, visualization
 import platform
 from tools.iostream import printw
+import os
 
 
 bubble_sort = [sort.bubble_sort.bubble_sort]
@@ -76,6 +77,19 @@ def sort_vertify(funcs, count=100, n=100):
             
         printw(line, color, None)
 
+    
+def sort_visualization(n, sort_func, visual_func, path, fps=20):
+    '''
+    @brief  排序算法流程可视化
+    @param  n   数据量
+    @param  sort_func   排序算法
+    @param  visual_func hook函数
+    @param  fps
+    '''
+    l = list_tools.generate_list(n, 1, n)
+    sort_func(l, 0, len(l) - 1, visual_func)
+    desc = file_tools.get_func_name(sort_func)
+    visualization.generate_gif_dir(os.path.join(path, desc), os.path.join(path, '%s.gif' % desc), fps=fps)
     
 def main():
     pass
