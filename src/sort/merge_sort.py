@@ -60,7 +60,7 @@ def merge_im(l, start, mid, end, hook_func=None):
             global count 
             count += 1
             
-        if i <= mid and j <= right:
+        if i <= mid and j <= end:
             if tmp[i] < tmp[j]:
                 l[k] = tmp[i]
                 i += 1
@@ -140,20 +140,22 @@ def merge_sort_down2top(l, start, end, hook_func):
     @param  end
     @param  hook_func   hook操作函数
     '''
-    size = 1    #每一次归并时采用的长度
+    size = end - start + 1
+    gap = 1    #每一次归并时采用的长度
     right = None
-    while size < end - start + 1:
-        times = int((end - start + 1)/(2 * size))
+    left = None
+    while gap < size:
+        times = int(size/(2 * gap))
         for i in range(times):
-            left = i * size * 2
-            mid = left + size
-            right = min(mid + size, end)
+            left = start + i * gap * 2
+            mid = left + gap - 1
+            right = min(mid + gap, end)
             merge(l, left, mid, right, hook_func)
             
-        size = 2 * size
-    
-    if right != end:
-        merge(l, start, right - 1, end)
+        if right != end:
+            merge(l, left, right, end)
+
+        gap = 2 * gap
         
         
 def merge_sort_top2down_im(l, start, end, hook_func):
@@ -176,12 +178,12 @@ def merge_sort_top2down_im(l, start, end, hook_func):
     merge_sort_top2down(l, start, mid, hook_func)
     merge_sort_top2down(l, mid + 1, end, hook_func)
     
-    merge_im(l, start, mid, end, hook_func)
+    merge(l, start, mid, end, hook_func)
     
     
 def merge_alter(l, aux, start, mid, end, hook_func=None):
     '''
-    @brief  合并有已经有序的部分，合并区间[left, mid),[mid, right)
+    @brief  合并有已经有序的部分，合并区间[start, mid],[mid + 1, end]
     @param  l   数据
     @param  aux     辅助分区
     @param  start    左边边界
@@ -190,11 +192,11 @@ def merge_alter(l, aux, start, mid, end, hook_func=None):
     @param  hook_func   hook函数
     @note   merge改进当l[mid - 1] < l[mid]表示已经有序，将后半段按照降序复制到aux中再归并到l中取消对部分边界检测，交换使用aux和l
     '''
-    if l[mid] < l[mid + 1]:
+    if l[mid] < l[mid + 1]: #已经有序
         return
         
     i = start
-    j = mid
+    j = mid + 1
     for k in range(start, end + 1):
         if hook_func is not None:
             hook_func(l, start, end, count)
@@ -226,20 +228,22 @@ def merge_sort_top2down_alter(l, aux, start, end, hook_func):
     @param  start
     @param  end
     @param  hook_func   hook操作函数
+    @note   TODO:   unsolved
     '''
-    if end < start:
+    if end <= start:
         return
         
+    '''
     if end - start < 16:            #magic number
         insert_sort.insert_sort_II(l, start, end, None)
         return
-        
-    mid = int(start + (end - start)/2)
-    merge_sort_top2down_alter(l, aux, start, mid, hook_func)
-    merge_sort_top2down_alter(l, aux, mid + 1, end, hook_func)
+    '''
     
-    merge_alter(l,aux, start, mid, end, hook_func)
-    l, aux = aux, l
+    mid = int(start + (end - start)/2)
+    merge_sort_top2down_alter(aux, l, start, mid, hook_func)
+    merge_sort_top2down_alter(aux, l, mid + 1, end, hook_func)
+    
+    merge_alter(l, aux, start, mid, end, hook_func)
     
 
 def merge_sort_alter(l, start, end, hook_func):
@@ -275,14 +279,18 @@ def merge_sort_mult(l, start, end, hook_func=None, n=4):
     @param  n   路数
     @param  hook_func   hook操作函数
     '''
-    if start + 1 < end:
+    if start < end:
         mid_list = []       #分界点数组
         mid_list.append(start)
-        gap = int((end - start)/n)  #需要进行修正如果元素为8个，数组长度为9，需要进行数据调整将八个数据分给千把个空位否则会出选stack overflow
-        over_no = end - start - gap * n     #多出来的元素
+        size = end - start + 1
+        gap = int(size / n)  #需要进行修正如果元素为8个，数组长度为9，需要进行数据调整将八个数据分给千把个空位否则会出选stack overflow
+        over_no = size - gap * n     #多出来的元素
         for i in range(1, n):
             #生成分界点数组
-            mid_list.append(start + i * gap)
+            if 1 == i:
+                mid_list.append(mid_list[i - 1] + gap - 1)
+            else:
+                mid_list.append(mid_list[i - 1] + gap)
             
         #对初次生成的边界点进行调整
         j = 1
@@ -292,15 +300,16 @@ def merge_sort_mult(l, start, end, hook_func=None, n=4):
                 j += 1
             else:
                 mid_list[i + 1] += j - 1
-            
         
         mid_list.append(end)
         for i in range(n):
-            merge_sort_mult(l, mid_list[i], mid_list[i + 1], hook_func, n)
+            if i == 0:
+                merge_sort_mult(l, mid_list[i], mid_list[i + 1], hook_func, n)
+            else:
+                merge_sort_mult(l, mid_list[i] + 1, mid_list[i + 1], hook_func, n)
             
         for i in range(1, n):
             merge_mult(l, mid_list[0], mid_list[i], mid_list[i + 1], hook_func)
-            
         
 def next_unsorted(l, start, end):
     '''
@@ -311,9 +320,9 @@ def next_unsorted(l, start, end):
     '''
     for i in range(start + 1, end + 1):
         if l[i - 1] > l[i]:
-            return i
+            return i - 1
             
-    return end + 1          #已经全部排序
+    return -1          #已经全部排序
     
     
 def merge_sort_nature(l, start, end, hook_func=None):
@@ -328,9 +337,11 @@ def merge_sort_nature(l, start, end, hook_func=None):
     mid = next_unsorted(l, start, end)
     right = mid
     while end + 1 != mid and end != right:        
-        right = next_unsorted(l, mid, end)
+        right = next_unsorted(l, mid + 1, end)
+        if -1 == right:
+            right = end
+            
         merge(l, left, mid, right, hook_func)
-        
         mid = right
         
         

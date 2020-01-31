@@ -24,15 +24,15 @@ merge_sort = [sort.merge_sort.merge_sort_top2down,
             sort.merge_sort.merge_sort_alter]
             
 quick_sort = [sort.quick_sort.quick_sort,
+            sort.quick_sort.quick_sort_II,
             sort.quick_sort.quick_sort3way,
             sort.quick_sort.quick_sort3way_faster,
             sort.quick_sort.quick_sort5sample,
-            sort.quick_sort.quick_sort_cyc,
-            sort.quick_sort.quick_sort_II]
+            sort.quick_sort.quick_sort_cyc]
             
 heap_sort = [sort.heap_sort.heap_sort]
-#all_sorts = [bubble_sort, selection_sort, insert_sort, shell_sort, merge_sort, quick_sort]
-all_sorts = [bubble_sort]
+
+all_sorts = [bubble_sort, selection_sort, insert_sort, shell_sort, merge_sort, quick_sort, heap_sort]
 
 
 def get_all():

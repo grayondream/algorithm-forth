@@ -7,7 +7,7 @@ def insert_sort(l, start, end, hook_func=None):
     @param  hook_func   hook函数
     '''
     count = 0
-    for i in range(start + 1, end + 1):
+    for i in range(start, end + 1):
         j = min(end, i + 1)
         while j > start and l[j - 1] > l[j]:
             if hook_func is not None:

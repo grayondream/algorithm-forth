@@ -4,99 +4,98 @@ from src.basic import stack
 
 
 count = 0
-def partition(l, left, right, hook_func):
+def partition(l, start, end, hook_func):
     '''
-    @brief  选择一个锚点将所有元素分割为两部分[left, right)，以第一个元素为锚点
+    @brief  选择一个锚点将所有元素分割为两部分[start, end]，以第一个元素为锚点
     @param  l   list
-    @param  left
-    @param  right
+    @param  start
+    @param  end
     @param  hook_func   hook函数
     @return 锚点
     '''
-    if (right - left) < 2:
-        return left
+    if end <= start:
+        return end
     
-    value = l[left]
-    i = left
-    j = right - 1
+    value = l[start]
+    i = start
+    j = end
     while i < j:
         if hook_func is not None:
             global count    
             count += 1
             hook_func(l, i, j, count)
             
-        while l[i] <= l[left] and i < j:
-            i += 1
-        
-        l[j] = l[i]
-        while l[j] > l[left] and i < j:
+        while l[j] > value and i < j:
             j -= 1
             
         l[i] = l[j]
-        
+        while l[i] <= value and i < j:  #结束之后i指向的是大于value的index
+            i += 1
+            
+        l[j] = l[i]
     l[i] = value
-    return i + 1
+    return i
     
     
-def quick_sort(l, left, right, hook_func=None):
+def quick_sort(l, start, end, hook_func=None):
     '''
-    @brief  快速排序[left, right)
+    @brief  快速排序[start, end]
     @param  l   list
-    @param  left    左边边界
-    @param  right   右边边界
+    @param  start    左边边界
+    @param  end   右边边界
     @param  hook_func   hook用function
     '''
-    if right - left < 2:
+    if end <= start:
         return
         
-    anchor = partition(l, left, right, hook_func)
-    if anchor == right or anchor == left:
-        return
-        
-    quick_sort(l, left, anchor)        
-    quick_sort(l, anchor, right)  
+    anchor = partition(l, start, end, hook_func)
+    quick_sort(l, start, anchor - 1)        
+    quick_sort(l, anchor + 1, end)  
     
     
-def quick_sort_II(l, left, right, hook_func=None):
+def quick_sort_II(l, start, end, hook_func=None):
     '''
-    @brief  快速排序[left, right)，当问题规模足够小时，使用插入排序代替
+    @brief  快速排序[start, end)，当问题规模足够小时，使用插入排序代替
     @param  l   list
-    @param  left    左边边界
-    @param  right   右边边界
+    @param  start    左边边界
+    @param  end   右边边界
     @param  hook_func   hook用function
     '''
-    if left >= right:
+    if start >= end:
         return
         
-    if right - left < 16:
-        insert_sort.insert_sort(l, left, right, None)
+    if end - start < 16:
+        insert_sort.insert_sort(l, start, end, None)
         return
         
-    anchor = partition(l, left, right, hook_func)
-    quick_sort(l, left, anchor)        
-    quick_sort(l, anchor + 1, right)  
+    anchor = partition(l, start, end, hook_func)
+    quick_sort(l, start, anchor - 1)        
+    quick_sort(l, anchor + 1, end)  
     
     
-def partition3way(l, left, right, hook_func):
+def partition3way(l, start, end, hook_func):
     '''
-    @param  三取样切分，将整个数组分成，小于当前元素，等于当前元素和大于当前元素三个部分[left, right)
+    @param  三取样切分，将整个数组分成，小于当前元素，等于当前元素和大于当前元素三个部分[start, end)
     @param  l
-    @param  left
-    @param  right
+    @param  start
+    @param  end
     @param  hook_func
+    @note   [start, lt]  lower
+            [lt + 1, i - 1] equal
+            [gt + 1, end]   bigger
     '''
-    value = l[left]    
-    i = left + 1
-    lt = left
-    gt = right - 1
-    while i < right:
+    value = l[start]    
+    i = start
+    lt = start - 1
+    gt = end
+    while i <= gt:
         if hook_func is not None:
             hook_func(l, lt, gt, count)
             global count
             count += 1
             
         if l[i] < value:
-            l[i], l[lt] = l[lt], l[i]
+            l[i], l[lt + 1] = l[lt + 1], l[i]
             lt += 1
         elif l[i] > value:
             l[i], l[gt] = l[gt], l[i]
@@ -104,40 +103,40 @@ def partition3way(l, left, right, hook_func):
         else:
             i+= 1
     
-    return lt, gt
+    return lt, gt + 1   
         
         
-def quick_sort3way(l, left, right, hook_func=None):
+def quick_sort3way(l, start, end, hook_func=None):
     '''
-    @brief  快速排序[left, right)，当问题规模足够小时，使用插入排序代替
+    @brief  快速排序[start, end)，当问题规模足够小时，使用插入排序代替
     @param  l   list
-    @param  left    左边边界
-    @param  right   右边边界
+    @param  start    左边边界
+    @param  end   右边边界
     @param  hook_func   hook用function
     '''
-    if left < right:
-        lt, gt = partition3way(l, left, right, hook_func)
-        quick_sort3way(l, left, lt, hook_func)
-        quick_sort3way(l, gt, right, hook_func)
+    if start < end:
+        lt, gt = partition3way(l, start, end, hook_func)
+        quick_sort3way(l, start, lt, hook_func)
+        quick_sort3way(l, gt, end, hook_func)
         
 
-def partition3way_faster(l, left, right, hook_func):
+def partition3way_faster(l, start, end, hook_func):
     '''
-    @param  三取样切分，将整个数组分成，小于当前元素，等于当前元素和大于当前元素三个部分[left, right)
+    @param  三取样切分，将整个数组分成，小于当前元素，等于当前元素和大于当前元素三个部分[start, end)
     @param  l
-    @param  left
-    @param  right
+    @param  start
+    @param  end
     @param  hook_func
-    @note   将left和right分为四段=anchor,<anchor,>anchor,=anchor    [left,p,i,j,q,right]
-            [left, p)   =v
+    @note   将start和end分为四段=anchor,<anchor,>anchor,=anchor    [start,p,i,j,q,end]
+            [start, p)   =v
             [p, i)      <v
             [i,j)       ?
             [j,q)       >v
-            [q,right)   =v
+            [q,end)   =v
     '''
-    anchor = l[left]
-    i = left + 1
-    j = right
+    anchor = l[start]
+    i = start + 1
+    j = end
     p = i
     q = j
     
@@ -166,13 +165,13 @@ def partition3way_faster(l, left, right, hook_func):
             i += 1
         
         #结束之后
-        #[left, p, ij, q, right]
-        while p != left:
+        #[start, p, ij, q, end]
+        while p != start:
             l[p - 1], l[i - 1] = l[i - 1], l[p - 1]
             p = p - 1
             i = i - 1
         
-        while q != right:
+        while q != end:
             l[q + 1], l[j + 1] = l[q + 1], l[j + 1]
             q = q + 1
             j = j + 1
@@ -180,27 +179,28 @@ def partition3way_faster(l, left, right, hook_func):
     return i, j
     
     
-def quick_sort3way_faster(l, left, right, hook_func=None):
+def quick_sort3way_faster(l, start, end, hook_func=None):
     '''
-    @brief  快速排序[left, right)，当问题规模足够小时，使用插入排序代替
+    @brief  快速排序[start, end)，当问题规模足够小时，使用插入排序代替
     @param  l   list
-    @param  left    左边边界
-    @param  right   右边边界
+    @param  start    左边边界
+    @param  end   右边边界
     @param  hook_func   hook用function
     '''
-    if left < right:
-        lt, gt = partition3way(l, left, right, hook_func)
-        quick_sort3way_faster(l, left, lt, hook_func)
-        quick_sort3way_faster(l, gt, right, hook_func)
+    if start < end:
+        lt, gt = partition3way(l, start, end, hook_func)
+        quick_sort3way_faster(l, start, lt, hook_func)
+        quick_sort3way_faster(l, gt, end, hook_func)
         
 
-def partition5sample(l, left, right, hook_func):
+def partition5sample(l, start, end, hook_func, sample_no=5):
     '''
     @brief  五取样切分使用从数组中采样的五个数的中位数进行parition
     @param  l   
-    @param  left
-    @param  right
+    @param  start
+    @param  end
     @param  hook_func
+    @param  sample_no   采样数
     '''
     def get_mid(l, part_list):
         '''
@@ -212,59 +212,49 @@ def partition5sample(l, left, right, hook_func):
             if l[i] == mid_value:
                 return i, mid_value
     
-    sample_no = 5       #采样数
-    part_index_list = [random.randint(left, right) for i in range(sample_no)]
-    anchor, anchor_value = get_mid(l, part_index_list)
+    part_index_list = [random.randint(start, end) for i in range(sample_no)]
+    anchor, _ = get_mid(l, part_index_list)
     
-    i = left
-    j = right - 1
-    while i < j:
-        while i < j and l[i] < anchor_value:
-            i += 1
-            
-        while i < j and l[j] > anchor_value:
-            j -= 1
-            
-        if i < j:
-            l[i], l[j] = l[j], l[i]
-            
-    l[j] = anchor_value
-    return j
+    l[anchor], l[start] = l[start], l[anchor]
+    
+    return partition(l, start, end, hook_func)
     
     
-def quick_sort5sample(l, left, right, hook_func=None):
+def quick_sort5sample(l, start, end, hook_func=None):
     '''
-    @brief  快速排序[left, right)，parition时使用从数组中随机采样的五个数的中位数进行切分
+    @brief  快速排序[start, end)，parition时使用从数组中随机采样的五个数的中位数进行切分
     @param  l   list
-    @param  left    左边边界
-    @param  right   右边边界
+    @param  start    左边边界
+    @param  end   右边边界
     @param  hook_func   hook用function
     '''
-    if left < right:
-        anchor = partition5sample(l, left, right, hook_func)
-        quick_sort5sample(l, left, anchor - 1, hook_func)
-        quick_sort5sample(l, anchor + 1, right, hook_func)
+    if start < end:
+        anchor = partition5sample(l, start, end, hook_func)
+        quick_sort5sample(l, start, anchor - 1, hook_func)
+        quick_sort5sample(l, anchor + 1, end, hook_func)
         
 
-def quick_sort_cyc(l, left, right, hook_func=None):
+def quick_sort_cyc(l, start, end, hook_func=None):
     '''
     @brief  快速排序非递归版本
     @param  l   list
-    @param  left
-    @param  right
+    @param  start
+    @param  end
     @parma  hook_func
-    @note   建立一个容器，容器的每个元素是一个tuple表示需要进行partition的left和right
+    @note   建立一个容器，容器的每个元素是一个tuple表示需要进行partition的start和end
     '''
     rst = stack.stack()
     snd = stack.stack()
-    rst.push((left, right))
-    while rst.empty():
-        while rst.empty():
-            left, right = rst.pop()
-            anchor = partition(l, left, right, hook_func)
-            if anchor - 1 > left and anchor + 1 < right:
-                snd.push((left, anchor - 1))
-                snd.push((anchor + 1, right))
+    rst.push((start, end))
+    while not rst.empty():
+        while not rst.empty():
+            start, end = rst.pop()
+            if end < start:
+                continue
+                
+            anchor = partition(l, start, end, hook_func)
+            snd.push((start, anchor - 1))
+            snd.push((anchor + 1, end))
             
         rst, snd = snd, rst
         

@@ -12,7 +12,7 @@ def shell_sort(l, start, end, hook_func=None):
     '''
     k = 1
     size = end - start + 1
-    while int((size/3) > k:
+    while int(size/3) > k:
         k = 3*k + 1
     
     count = 0

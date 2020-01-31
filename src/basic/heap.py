@@ -26,7 +26,7 @@ def swim(l, start, end, k, com_func):
     @note   上浮从下到上，大根堆, parent = floor((i-1)/2)，具体构造大根堆还是小根堆完全由用户指定的com_func确定，bigger为大根堆，less为小根堆
     '''
     parent = int((k - 1)/2)
-    while k != start and com_func(l[parent], l[k]):
+    while k != start and com_func(l[k], l[parent]):
         l[parent], l[k] = l[k], l[parent]
         k = parent
         parent = int((k - 1)/2)
@@ -34,7 +34,7 @@ def swim(l, start, end, k, com_func):
         
 def swim_im(l, start, end, k, com_func):
     '''
-    @brief  l       当前进行上浮的列表[start, end)
+    @brief  l       当前进行上浮的列表[start, end]
     @param  start    当前元素的左边界,start处的元素为根
     @param  end   当前元素的右边界
     @param  k       当前进行上浮的元素
@@ -43,7 +43,7 @@ def swim_im(l, start, end, k, com_func):
     '''
     parent = int((k - 1)/2)
     sent = l[k]
-    while k != start and com_func(l[parent], l[k]):
+    while k != start and com_func(l[k], l[parent]):
         l[k] = l[parent]
         k = parent
         parent = int((k - 1)/2)
@@ -64,10 +64,10 @@ def sink(l, start, end, k, com_func):
         left_child = 2 * k + 1
         right_child = 2 * k + 2
         i = left_child
-        if com_func(l[right_child], l[left_child]):
+        if right_child <= end and com_func(l[right_child], l[left_child]):
             i = right_child
         
-        if not com_func(l[k], l[i]):
+        if i > end or com_func(l[k], l[i]):
             break
             
         l[i], l[k] = l[k], l[i]
