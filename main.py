@@ -43,58 +43,25 @@ def test_sort_visualize():
     @brief  排序算法可视化
     '''
     n = 100
-    sort_func = heap_sort.heap_sort
-    visual_func = visualization.heap_sort_visualization
+    sort_func = quick_sort.quick_sort
+    visual_func = visualization.quick_sort_visualization
     path = './img'
     fps = 20
     test.sort.sort_visualization(n, sort_func, visual_func, path, fps)
-    
-    
-def test_search():
-    '''
-    @brief  查找算法测试
-    '''
-    for i in range(1):
-        l = list_tools.generate_list(100 , 1, 100, True)
-        value = random.randint(0, 100)
-        print(value, binary_search.binary_search(l, 0, len(l) - 1, value, visualization.search_visualization_hook))
-
-    path = './img/'
-    visualization.generate_gif_dir(os.path.join(path, 'binary_search'), os.path.join(path, 'bin_search.gif'), fps=2)
 
 
-
-def test_sort_preformance():
-    '''
-    @brief  不同排序算法性能对比
-    '''
-    sort_funcs = [bubble_sort.bubble_sort, insert_sort.insert_sort, shell_sort.shell_sort, selection_sort.selection_sort, insert_sort.insert_sort_II]
-    sorted = True
-    reverse = True
-    
-    total_times = []
-    ranges = range(100, 1000, 10)
-    for n in ranges:
-        times = performance.sort_performance(n, sort_funcs, sorted=sorted, reverse=reverse, repeat=5)    
-        total_times.append(times)
-        print(n, times)
-            
-    plt.figure()
-    plt.title('random sorted reversed data')
-    plt.xlabel('number')
-    plt.ylabel("time(s)")
-    
-    for i in range(len(total_times[0])):
-        print(sort_funcs[i])
-        plt.plot(list(ranges), [ele[i] for ele in total_times], label=str(sort_funcs[i])[10:-23])
-    
-    plt.legend()
-    plt.show()
+def test_sort_performance():
+    random_dict = ['same', 'int', 'bin', 'norm', 'poiss']
+    path = 'G:/altas/algorithm-forth/img/'
+    sort_funcs = test.sort.shell_sort
+    for key in random_dict:        
+        test.sort.test_sort_preformance(path, sort_funcs, key, count=1000)
     
     
 def main():
     #vertify_sort_test()
-    test_sort_visualize()
+    #test_sort_visualize()
+    test_sort_performance()
     
 if __name__ == '__main__':
     main()

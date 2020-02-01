@@ -1,10 +1,11 @@
 from tools import list_tools
 from src import sort
 import time
-from tools import file_tools, visualization
+from tools import file_tools, visualization, performance
 import platform
 from tools.iostream import printw
 import os
+import matplotlib.pyplot as plt
 
 
 bubble_sort = [sort.bubble_sort.bubble_sort]
@@ -21,8 +22,8 @@ merge_sort = [sort.merge_sort.merge_sort_top2down,
             sort.merge_sort.merge_sort_down2top,
             sort.merge_sort.merge_sort_nature,
             sort.merge_sort.merge_sort_mult,
-            sort.merge_sort.merge_sort_top2down_im,
-            sort.merge_sort.merge_sort_alter]
+            sort.merge_sort.merge_sort_top2down_im]
+            #sort.merge_sort.merge_sort_alter]
             
 quick_sort = [sort.quick_sort.quick_sort,
             sort.quick_sort.quick_sort_II,
@@ -90,6 +91,31 @@ def sort_visualization(n, sort_func, visual_func, path, fps=20):
     sort_func(l, 0, len(l) - 1, visual_func)
     desc = file_tools.get_func_name(sort_func)
     visualization.generate_gif_dir(os.path.join(path, desc), os.path.join(path, '%s.gif' % desc), fps=fps)
+    
+
+def test_sort_preformance(path, sort_funcs, random_index, count=1000, sorted=False, reverse=False):
+    '''
+    @brief  不同排序算法性能对比
+    '''
+    total_times = []
+    ranges = range(10, count, 10)
+    for n in ranges:
+        times = performance.sort_performance(n, sort_funcs, random_index, sorted=sorted, reverse=reverse, repeat=5)    
+        total_times.append(times)
+        print(n)
+            
+    plt.figure()
+    plt.title(random_index)
+    plt.xlabel('number')
+    plt.ylabel("time(s)")
+    
+    for i in range(len(total_times[0])):
+        plt.plot(list(ranges), [ele[i] for ele in total_times], label=str(file_tools.get_func_name(sort_funcs[i])))
+    
+    plt.legend()
+    #plt.savefig(os.path.join(path, random_index + '.png'))
+    plt.show()
+    
     
 def main():
     pass

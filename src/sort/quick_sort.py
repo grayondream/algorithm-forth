@@ -33,6 +33,10 @@ def partition(l, start, end, hook_func):
             i += 1
             
         l[j] = l[i]
+        if hook_func is not None:
+            global count    
+            count += 1
+            hook_func(l, i, j, count)
     l[i] = value
     return i
     
@@ -48,9 +52,18 @@ def quick_sort(l, start, end, hook_func=None):
     if end <= start:
         return
         
+    if hook_func is not None:
+        global count    
+        count += 1
+        hook_func(l, start, end, count)
     anchor = partition(l, start, end, hook_func)
-    quick_sort(l, start, anchor - 1)        
-    quick_sort(l, anchor + 1, end)  
+    if hook_func is not None:
+        global count    
+        count += 1
+        hook_func(l, start, end, count)
+        
+    quick_sort(l, start, anchor - 1, hook_func)        
+    quick_sort(l, anchor + 1, end, hook_func)  
     
     
 def quick_sort_II(l, start, end, hook_func=None):
