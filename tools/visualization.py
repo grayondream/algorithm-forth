@@ -98,9 +98,10 @@ def sort_visualization_hook(data, indexi, indexj, count, desc, img_ratio=20):
     @param  count   用来进行图片的记名
     @param  desc    描述信息
     '''
+    '''
     if count % img_ratio != 0:
         return
-        
+    '''
     h, w, v_border, w_border = 600, 800, 100, 5   #长宽边界,opencv左上角为0，0
     gap_ratio = (2,1)   #设置gap的比例,数据的条目宽度和之间的间隔只比
     

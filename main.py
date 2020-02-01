@@ -43,8 +43,8 @@ def test_sort_visualize():
     @brief  排序算法可视化
     '''
     n = 100
-    sort_func = merge_sort.merge_sort_down2top
-    visual_func = visualization.bubble_sort_visualization
+    sort_func = heap_sort.heap_sort
+    visual_func = visualization.heap_sort_visualization
     path = './img'
     fps = 20
     test.sort.sort_visualization(n, sort_func, visual_func, path, fps)

@@ -17,14 +17,19 @@ def merge(l, start, mid, end, hook_func=None):
     i = start
     j = mid + 1
     k = start
+        
     while i <= mid and j <= end:
+        if hook_func is not None:
+            hook_func(l, start, end, count)
+            global count 
+            count += 1
         if tmp[i] < tmp[j]:
             l[k] = tmp[i]
             i += 1
         else:
             l[k] = tmp[j]
             j += 1
-            
+
         k += 1
                 
     while i <= mid:
@@ -100,11 +105,6 @@ def merge_im_II(l, start, mid, end, hook_func=None):
     i = start
     j = end + 1
     for k in range(start, end):
-        if hook_func is not None:
-            hook_func(l, start, end, count)
-            global count 
-            count += 1
-                
         if i < j:
             if aux[i] < aux[j]:
                 l[k] = aux[i]
@@ -129,7 +129,15 @@ def merge_sort_top2down(l, start, end, hook_func):
     merge_sort_top2down(l, start, mid, hook_func)
     merge_sort_top2down(l, mid + 1, end, hook_func)
     
+    if hook_func is not None:
+        hook_func(l, start, end, count)
+        global count 
+        count += 1
     merge(l, start, mid, end, hook_func)
+    if hook_func is not None:
+        hook_func(l, start, end, count)
+        global count 
+        count += 1
     
 
 def merge_sort_down2top(l, start, end, hook_func):
@@ -146,6 +154,11 @@ def merge_sort_down2top(l, start, end, hook_func):
     left = None
     while gap < size:
         times = int(size/(2 * gap))
+        if hook_func is not None:
+            hook_func(l, start, end, count)
+            global count 
+            count += 1
+        
         for i in range(times):
             left = start + i * gap * 2
             mid = left + gap - 1
@@ -154,7 +167,11 @@ def merge_sort_down2top(l, start, end, hook_func):
             
         if right != end:
             merge(l, left, right, end)
-
+        
+        if hook_func is not None:
+            hook_func(l, start, end, count)
+            global count 
+            count += 1
         gap = 2 * gap
         
         
