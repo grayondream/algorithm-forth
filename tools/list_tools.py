@@ -23,6 +23,38 @@ def random_int(low, high, count):
     '''
     return [random.randint(low, high) for i in range(count)]
     
+
+def random_int_sorted(low, high, count):
+    '''
+    @return random  数据进行排序
+    '''
+    ret = random_int(low, high, count)
+    ret.sort()
+    return ret
+    
+    
+def random_int90(low, high, count):
+    '''
+    @brief  90%的元素有序
+    '''
+    ret = random_int_sorted(low, high, count)
+    size = int(len(ret) * 0.1)
+    for i in range(size):
+        index = random.randint(0, count - 1)
+        ret[index], ret[0] = ret[0], ret[index]
+        
+    return ret
+    
+    
+def random_int_reverse(low, high, count):
+    '''
+    @brief  逆序的random数据
+    '''
+    ret = random_int(low, high, count)
+    ret.sort()
+    ret.reverse()
+    return ret
+
     
 def random_poisson(low, high, count):
     '''
@@ -56,28 +88,21 @@ def random_bin(low, high, count):
     return ret
     
     
-random_dict = {'same' : random_same, 'bin' : random_bin, 'int' : random_int, 'norm' : random_normal, 'poiss' : random_poisson}
+random_dict = {'same' : random_same, 'bin' : random_bin, 'int' : random_int, 'norm' : random_normal, 'poiss' : random_poisson, 'int_sort' : random_int_sorted, 'int_sort_reverse' : random_int_reverse, 'int_sort90' : random_int90}
     
-def generate_list(count:int , low=0, top=sys.maxsize, random_index='int', sorted=False, reverse=False) -> list:
+    
+def generate_list(count:int , low=0, top=sys.maxsize, random_index='int') -> list:
     '''
     @brief  生成一个随机的int list，可以指定是否经过排序
     @param  count   元素数量
     @param  low     最小值下界
     @param  top     最大值上界
     @param  random_index    生成数据的方式
-    @param  sorted  是否需要进行排序
-    @param  reverse 是否进行反转
     '''
     assert low < top, 'low >= top, %d >= %d' % (low, top)
     res_list = list(random_dict[random_index](low, top, count))
     res_list = [int(ele) for ele in res_list]
     
-    if sorted:
-        res_list.sort()
-
-    if reverse:
-        res_list.reverse()
-        
     return res_list
 
 

@@ -8,7 +8,10 @@ import os
 import matplotlib.pyplot as plt
 
 
-bubble_sort = [sort.bubble_sort.bubble_sort]
+bubble_sort = [sort.bubble_sort.bubble_sort, 
+            sort.bubble_sort.bubble_sort_II, 
+            sort.bubble_sort.bubble_sort_III]
+            
 insert_sort = [sort.insert_sort.insert_sort,
             sort.insert_sort.insert_sort_II]
             
@@ -93,18 +96,18 @@ def sort_visualization(n, sort_func, visual_func, path, fps=20):
     visualization.generate_gif_dir(os.path.join(path, desc), os.path.join(path, '%s.gif' % desc), fps=fps)
     
 
-def test_sort_preformance(path, sort_funcs, random_index, count=1000, sorted=False, reverse=False):
+def test_sort_preformance(path, sort_funcs, random_index, count=1000):
     '''
     @brief  不同排序算法性能对比
     '''
     total_times = []
     ranges = range(10, count, 10)
     for n in ranges:
-        times = performance.sort_performance(n, sort_funcs, random_index, sorted=sorted, reverse=reverse, repeat=5)    
+        times = performance.sort_performance(n, sort_funcs, random_index, repeat=5)    
         total_times.append(times)
         print(n)
             
-    plt.figure()
+    plt.figure(dpi=200, figsize=(16, 9))
     plt.title(random_index)
     plt.xlabel('number')
     plt.ylabel("time(s)")
@@ -113,8 +116,8 @@ def test_sort_preformance(path, sort_funcs, random_index, count=1000, sorted=Fal
         plt.plot(list(ranges), [ele[i] for ele in total_times], label=str(file_tools.get_func_name(sort_funcs[i])))
     
     plt.legend()
-    #plt.savefig(os.path.join(path, random_index + '.png'))
-    plt.show()
+    plt.savefig(os.path.join(path, random_index + '.png'))
+    #plt.show()
     
     
 def main():
