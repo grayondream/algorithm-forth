@@ -15,7 +15,7 @@ function bubble_sort(array):
 ```
 ### 1.2 流程可视化
 #### 1.2.1 详细流程
-
+![](../../ppt/bubble_sort.gif)
 
 #### 1.2.2 流程全貌
 ![](../../img/sort/gif/bubble_sort.gif)
