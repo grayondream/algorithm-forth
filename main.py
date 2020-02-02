@@ -11,7 +11,7 @@ def vertify_sort_test():
     '''
     验证算法的可行性
     '''
-    func = test.sort.get_all()
+    func = test.sort.merge_sort
     count = 10
     n = 2000
     test.sort.sort_vertify(func, count, n)    
@@ -38,9 +38,9 @@ def test_sort_performance():
     
     
 def main():
-    #vertify_sort_test()
+    vertify_sort_test()
     #test_sort_visualize()
-    test_sort_performance()
+    #test_sort_performance()
     
 if __name__ == '__main__':
     main()

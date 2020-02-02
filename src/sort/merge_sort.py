@@ -209,34 +209,38 @@ def merge_alter(l, aux, start, mid, end, hook_func=None):
     @param  hook_func   hook函数
     @note   merge改进当l[mid - 1] < l[mid]表示已经有序，将后半段按照降序复制到aux中再归并到l中取消对部分边界检测，交换使用aux和l
     '''
-    if l[mid] < l[mid + 1]: #已经有序
-        return
+    #if l[mid] < l[mid + 1]: #已经有序
+    #    return
         
     i = start
     j = mid + 1
-    for k in range(start, end + 1):
+    k = start
+    while i <= mid and j <= end:
         if hook_func is not None:
             hook_func(l, start, end, count)
             global count 
             count += 1
-            
-        if i <= mid and j <= end:
-            if aux[i] < aux[j]:
-                l[k] = aux[i]
-                i += 1
-            else:
-                l[k] = aux[j]
-                j += 1
+        if aux[i] < aux[j]:
+            l[k] = aux[i]
+            i += 1
         else:
-            while i <= mid:
-                l[k] = aux[i]
-                i += 1
+            l[k] = aux[j]
+            j += 1
+
+        k += 1
                 
-            while j <= end:
-                l[k] = aux[j]
-                j += 1
-                
-                
+    while i <= mid:
+        l[k] = aux[i]
+        k += 1
+        i+= 1
+
+    while j <= end:
+        l[k] = aux[j]
+        k += 1
+        j+= 1
+
+    pass
+    
 def merge_sort_top2down_alter(l, aux, start, end, hook_func):
     '''
     @brief  自顶向下二路归并排序
@@ -250,11 +254,9 @@ def merge_sort_top2down_alter(l, aux, start, end, hook_func):
     if end <= start:
         return
         
-    '''
-    if end - start < 16:            #magic number
+    if end - start < 8:            #magic number
         insert_sort.insert_sort_II(l, start, end, None)
         return
-    '''
     
     mid = int(start + (end - start)/2)
     merge_sort_top2down_alter(aux, l, start, mid, hook_func)

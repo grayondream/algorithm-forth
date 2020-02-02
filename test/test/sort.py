@@ -25,8 +25,8 @@ merge_sort = [sort.merge_sort.merge_sort_top2down,
             sort.merge_sort.merge_sort_down2top,
             sort.merge_sort.merge_sort_nature,
             sort.merge_sort.merge_sort_mult,
-            sort.merge_sort.merge_sort_top2down_im]
-            #sort.merge_sort.merge_sort_alter]
+            sort.merge_sort.merge_sort_top2down_im,
+            sort.merge_sort.merge_sort_alter]
             
 quick_sort = [sort.quick_sort.quick_sort,
             sort.quick_sort.quick_sort_II,
