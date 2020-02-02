@@ -209,8 +209,10 @@ def merge_alter(l, aux, start, mid, end, hook_func=None):
     @param  hook_func   hook函数
     @note   merge改进当l[mid - 1] < l[mid]表示已经有序，将后半段按照降序复制到aux中再归并到l中取消对部分边界检测，交换使用aux和l
     '''
-    #if l[mid] < l[mid + 1]: #已经有序
-    #    return
+    if aux[mid] < aux[mid + 1]: #已经有序
+        return
+        #print('l', str(l[start:mid + 1]), str(l[mid + 1: end + 1]))
+        #print('aux', str(aux[start:mid + 1]), str(aux[mid + 1: end + 1]))
         
     i = start
     j = mid + 1
