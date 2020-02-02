@@ -15,7 +15,9 @@ bubble_sort = [sort.bubble_sort.bubble_sort,
 insert_sort = [sort.insert_sort.insert_sort,
             sort.insert_sort.insert_sort_II]
             
-selection_sort = [sort.selection_sort.selection_sort]
+selection_sort = [sort.selection_sort.selection_sort,
+                sort.selection_sort.selection_sort_II]
+                
 shell_sort = [sort.shell_sort.shell_sort_normal,
             sort.shell_sort.shell_sort_poly1, 
             sort.shell_sort.shell_sort_poly12,

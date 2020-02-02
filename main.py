@@ -1,4 +1,4 @@
-from tools import list_tools, visualization, performance
+from tools import list_tools, visualization, performance, file_tools
 from src.search import binary_search
 from src.sort import bubble_sort, insert_sort, shell_sort, selection_sort, merge_sort, quick_sort, heap_sort
 import random
@@ -11,7 +11,7 @@ def vertify_sort_test():
     '''
     验证算法的可行性
     '''
-    func = test.sort.merge_sort
+    func = test.sort.selection_sort
     count = 10
     n = 2000
     test.sort.sort_vertify(func, count, n)    
@@ -31,16 +31,17 @@ def test_sort_visualize():
 
 def test_sort_performance():
     random_dict = list_tools.random_dict.keys()
-    path = 'G:/altas/algorithm-forth/img/sort/performance/bubble'
-    sort_funcs = test.sort.bubble_sort
+    path = 'G:/altas/algorithm-forth/img/sort/performance/selection'
+    file_tools.makesure_path(path)
+    sort_funcs = test.sort.selection_sort
     for key in random_dict:        
         test.sort.test_sort_preformance(path, sort_funcs, key, count=1000)
     
     
 def main():
-    vertify_sort_test()
+    #vertify_sort_test()
     #test_sort_visualize()
-    #test_sort_performance()
+    test_sort_performance()
     
 if __name__ == '__main__':
     main()
