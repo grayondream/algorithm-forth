@@ -13,7 +13,8 @@ bubble_sort = [sort.bubble_sort.bubble_sort,
             sort.bubble_sort.bubble_sort_III]
             
 insert_sort = [sort.insert_sort.insert_sort,
-            sort.insert_sort.insert_sort_II]
+            sort.insert_sort.insert_sort_II,
+            sort.insert_sort.insert_sort_III]
             
 selection_sort = [sort.selection_sort.selection_sort,
                 sort.selection_sort.selection_sort_II]

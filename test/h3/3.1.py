@@ -27,5 +27,5 @@ class time_object(object):
                 
                 
 '''
-见binary_search中的binary_search_inter实现
+3.1.24 见binary_search中的binary_search_inter实现
 '''

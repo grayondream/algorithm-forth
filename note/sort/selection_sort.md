@@ -7,9 +7,9 @@
 &emsp;&emsp;算法的伪代码：
 ```
 function selection_sort(list):
-    for i from 0 to list.length:
+    for i from 0 to list.length - 1:
         min_index = i
-        for j from i + 1 to list.length:
+        for j from i + 1 to list.length - 1:
             if l[mind_index] > l[j]:
                 min_index = j
             

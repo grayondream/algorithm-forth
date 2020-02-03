@@ -1,3 +1,6 @@
+from src.search import binary_search
+
+
 def insert_sort(l, start, end, hook_func=None):
     '''
     @brief  插入排序，排序范围[start, end]
@@ -39,6 +42,36 @@ def insert_sort_II(l, start, end, hook_func=None):
             j -= 1
             
         l[j + 1] = tmp
+        
+
+def insert_sort_III(l, start, end, hook_func=None):
+    '''
+    @brief  插入排序，排序范围[start, end]，排序时使用哨兵，减少对数组的访问
+    @param  l   进行排序的list
+    @param  start   开始位置
+    @param  end 结束位置
+    @param  hook_func   hook函数
+    @note   使用二分查找法优化    
+    '''
+    count = 0
+    for i in range(start + 1, end + 1):
+        j = i
+        left = start
+        right = i
+        while left <= right:
+            mid = int(left + (right - left)/2)
+            if l[mid] < l[j]:
+                left = mid + 1
+            else:
+                right = mid - 1
+        
+        j = i
+        value = l[j]
+        while j > left:
+            l[j] = l[j - 1]
+            j -= 1
+            
+        l[j] = value
         
         
 if __name__ == '__main__':
