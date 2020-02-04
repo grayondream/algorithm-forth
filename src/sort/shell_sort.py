@@ -2,6 +2,7 @@ import math
 from tools import shell_step
 
 
+                
 def shell_sort(l, start, end, hook_func=None):
     '''
     @brief  希尔排序算法[start, end]
@@ -58,10 +59,99 @@ def shell_sort_custom(l, start, end, k_list, hook_func=None):
         
         k -= 1
     
+def shell_sort_custom_sent(l, start, end, k_list, hook_func=None):
+    '''
+    @brief  希尔排序算法使用用户自定义的步长, [start, end],引入哨兵进行优化
+    @param  l   需要进行排序的list
+    @param  start   开始位置
+    @param  end 结束位置
+    @param  k_list  步进
+    @param  hook_func   进行可视化的函数
+    '''
+    #k_list = [1, 5, 19, 41, 109, 209, 505, 929, 2161, 3905, 8929]   #9*4^k-9*2^k+1,4^k-3*2^k+1
+    #k = 1
+    #while int((end - start)/3) > k:
+    #    k = 3*k + 1
+    k = len(k_list) - 1
+    count = 0
+    while k >= 0:
+        for i in range(start, end + 1):
+            j = i
+            sent = l[j]
+            while j >= k_list[k] and sent < l[j - k_list[k]]:
+                if hook_func is not None:
+                    hook_func(l, i, j, count)
+                    count += 1
+                
+                l[j] = l[j - k_list[k]]
+                j -= k_list[k]
+            
+            l[j] = sent
+            
+        k -= 1
+        
+
+def shell_sort_custom_bin(l, start, end, k_list, hook_func=None):
+    '''
+    @brief  希尔排序算法使用用户自定义的步长, [start, end],使用二分查找进行搜索
+    @param  l   需要进行排序的list
+    @param  start   开始位置
+    @param  end 结束位置
+    @param  k_list  步进
+    @param  hook_func   进行可视化的函数
+    '''
+    #k_list = [1, 5, 19, 41, 109, 209, 505, 929, 2161, 3905, 8929]   #9*4^k-9*2^k+1,4^k-3*2^k+1
+    #k = 1
+    #while int((end - start)/3) > k:
+    #    k = 3*k + 1
+    k = len(k_list) - 1
+    count = 0
+    while k >= 0:
+        for i in range(start, end + 1):
+            j = i
+            sent = l[j]
+            right_count = 0                   #引入count是为了方便下面进行mid的计算
+            left_count = 0                      #这里的right和left只是表明数组上两个点的位置关系
+            #while i - left_count * k_list[k] >= start:    #寻找查找边界
+            #    left_count += 1
+            left_count = int((i - i % k_list[k])/k_list[k])
+            
+            #left_count -= 1 
+            left = i - left_count * k_list[k]
+            #二分查找
+            while right_count <= left_count:
+                mid_count = int(right_count + (left_count - right_count)/2 )
+                mid = i - mid_count * k_list[k] 
+                if l[mid] < sent:
+                    left_count = mid_count - 1
+                else:
+                    right_count = mid_count + 1
+                
+            left = i - left_count * k_list[k]    
+            while j > left:
+                if hook_func is not None:
+                    hook_func(l, i, j, count)
+                    count += 1
+                
+                l[j] = l[j - k_list[k]]
+                j -= k_list[k]
+            
+            l[left] = sent
+            
+        k -= 1
+        
+        
 '''
 下面是采用不同的step序列的shell排序的实现
 '''
+def shell_sort_geo_sent(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc)
+    shell_sort_custom_sent(l, start, end, k_list, hook_func)
     
+def shell_sort_geo_bin(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc)
+    shell_sort_custom_bin(l, start, end, k_list, hook_func)
+
 def shell_sort_normal(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_normal)
     shell_sort_custom(l, start, end, k_list, hook_func)
@@ -89,7 +179,45 @@ def shell_sort_geo(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc)
     shell_sort_custom(l, start, end, k_list, hook_func)
     
+'''
+t^k 2-10相关函数定义
+'''
+def shell_sort_geo2(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=2)
+    shell_sort_custom(l, start, end, k_list, hook_func)
+
+def shell_sort_geo3(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=3)
+    shell_sort_custom(l, start, end, k_list, hook_func)
+
+def shell_sort_geo4(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=4)
+    shell_sort_custom(l, start, end, k_list, hook_func)
+
+def shell_sort_geo5(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=5)
+    shell_sort_custom(l, start, end, k_list, hook_func)
+
+def shell_sort_geo6(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=6)
+    shell_sort_custom(l, start, end, k_list, hook_func)
     
+def shell_sort_geo7(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=7)
+    shell_sort_custom(l, start, end, k_list, hook_func)
+    
+def shell_sort_geo8(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=8)
+    shell_sort_custom(l, start, end, k_list, hook_func)
+    
+def shell_sort_geo9(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=9)
+    shell_sort_custom(l, start, end, k_list, hook_func)
+
+def shell_sort_geo10(l, start, end, hook_func):
+    k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=10)
+    shell_sort_custom(l, start, end, k_list, hook_func)
+
 def shell_test(dat, k_list):
     while k_list[len(k_list) - 1] > len(dat):
         del k_list[len(k_list) - 1]
@@ -129,5 +257,26 @@ def main():
         print(str(t), shell_test(dat, k_list))
     
     
+shell_sort_opt = [shell_sort_geo,
+                    shell_sort_geo_sent,
+                    shell_sort_geo_bin
+                    ]
+                    
+all = [shell_sort_normal,
+            shell_sort_poly1, 
+            shell_sort_poly12,
+            shell_sort_geo]
+            
+shell_sort_tk = [shell_sort_geo2,
+                shell_sort_geo3,
+                shell_sort_geo4,
+                shell_sort_geo5,
+                shell_sort_geo6,
+                shell_sort_geo7,
+                shell_sort_geo8,
+                shell_sort_geo9,
+                shell_sort_geo10
+                ]
+                
 if __name__ == '__main__':
     main()

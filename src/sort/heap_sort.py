@@ -1,5 +1,7 @@
 from src.basic import heap
 
+
+
 count = 0
 def heap_sort(l, start, end, hook_func):
     '''
@@ -34,3 +36,5 @@ def heap_sort(l, start, end, hook_func):
             global count 
             count += 1
         
+
+all = [heap_sort]

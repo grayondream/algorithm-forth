@@ -1,6 +1,7 @@
 from src.search import binary_search
 
-
+            
+            
 def insert_sort(l, start, end, hook_func=None):
     '''
     @brief  插入排序，排序范围[start, end]
@@ -82,3 +83,6 @@ if __name__ == '__main__':
     print(dat)
     
     
+all = [insert_sort,
+            insert_sort_II,
+            insert_sort_III]

@@ -3,6 +3,8 @@ import random
 from src.basic import stack
 
 
+            
+            
 count = 0
 def partition(l, start, end, hook_func):
     '''
@@ -272,3 +274,9 @@ def quick_sort_cyc(l, start, end, hook_func=None):
         rst, snd = snd, rst
         
     
+all = [quick_sort,
+            quick_sort_II,
+            quick_sort3way,
+            quick_sort3way_faster,
+            quick_sort5sample,
+            quick_sort_cyc]

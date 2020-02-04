@@ -1,3 +1,5 @@
+            
+
 def bubble_sort(l, start, end, hook_func=None):
     '''
     @brief  冒泡排序算法，排序区间[start, end]
@@ -71,3 +73,7 @@ def bubble_sort_III(l, start, end, hook_func=None):
         sorted_border = last_swap_index
         if sorted:
             break
+
+all = [bubble_sort, 
+            bubble_sort_II, 
+            bubble_sort_III]

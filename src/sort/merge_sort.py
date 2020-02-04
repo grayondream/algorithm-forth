@@ -1,7 +1,7 @@
 from src.sort import insert_sort
 from src.basic import linklist
 
-
+            
 #归并排序
 count = 0
 def merge(l, start, mid, end, hook_func=None):
@@ -396,3 +396,11 @@ def merge_link(left, mid, right):
         ret_index.next = snd_index
         
     return ret
+    
+    
+all = [merge_sort_top2down,
+            merge_sort_down2top,
+            merge_sort_nature,
+            merge_sort_mult,
+            merge_sort_top2down_im,
+            merge_sort_alter]

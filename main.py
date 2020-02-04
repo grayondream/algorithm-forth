@@ -11,9 +11,9 @@ def vertify_sort_test():
     '''
     验证算法的可行性
     '''
-    func = test.sort.insert_sort
+    func = shell_sort.shell_sort_opt
     count = 10
-    n = 200
+    n = 10
     test.sort.sort_vertify(func, count, n)    
     
     
@@ -31,11 +31,11 @@ def test_sort_visualize():
 
 def test_sort_performance():
     random_dict = list_tools.random_dict.keys()
-    path = 'G:/altas/algorithm-forth/img/sort/performance/insert'
+    path = 'G:/altas/algorithm-forth/img/sort/performance/shell/opt'
     file_tools.makesure_path(path)
-    sort_funcs = test.sort.insert_sort
+    func = shell_sort.shell_sort_opt
     for key in random_dict:        
-        test.sort.test_sort_preformance(path, sort_funcs, key, count=1000)
+        test.sort.test_sort_preformance(path, func, key, count=1000)
     
     
 def main():

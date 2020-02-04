@@ -1,3 +1,6 @@
+
+
+
 def selection_sort(l, start, end, hook_func=None):
     '''
     @brief  选择排序算法[start, end]
@@ -52,3 +55,6 @@ def selection_sort_II(l, start, end, hook_func=None):
             
         left += 1
         right -= 1
+        
+all = [selection_sort,
+                selection_sort_II]

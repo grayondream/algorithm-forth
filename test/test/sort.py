@@ -1,5 +1,5 @@
 from tools import list_tools
-from src import sort
+from src.sort import bubble_sort, selection_sort, insert_sort, shell_sort, merge_sort, quick_sort, heap_sort
 import time
 from tools import file_tools, visualization, performance
 import platform
@@ -7,40 +7,14 @@ from tools.iostream import printw
 import os
 import matplotlib.pyplot as plt
 
-
-bubble_sort = [sort.bubble_sort.bubble_sort, 
-            sort.bubble_sort.bubble_sort_II, 
-            sort.bubble_sort.bubble_sort_III]
-            
-insert_sort = [sort.insert_sort.insert_sort,
-            sort.insert_sort.insert_sort_II,
-            sort.insert_sort.insert_sort_III]
-            
-selection_sort = [sort.selection_sort.selection_sort,
-                sort.selection_sort.selection_sort_II]
-                
-shell_sort = [sort.shell_sort.shell_sort_normal,
-            sort.shell_sort.shell_sort_poly1, 
-            sort.shell_sort.shell_sort_poly12,
-            sort.shell_sort.shell_sort_geo]
-            
-merge_sort = [sort.merge_sort.merge_sort_top2down,
-            sort.merge_sort.merge_sort_down2top,
-            sort.merge_sort.merge_sort_nature,
-            sort.merge_sort.merge_sort_mult,
-            sort.merge_sort.merge_sort_top2down_im,
-            sort.merge_sort.merge_sort_alter]
-            
-quick_sort = [sort.quick_sort.quick_sort,
-            sort.quick_sort.quick_sort_II,
-            sort.quick_sort.quick_sort3way,
-            sort.quick_sort.quick_sort3way_faster,
-            sort.quick_sort.quick_sort5sample,
-            sort.quick_sort.quick_sort_cyc]
-            
-heap_sort = [sort.heap_sort.heap_sort]
-
-all_sorts = [bubble_sort, selection_sort, insert_sort, shell_sort, merge_sort, quick_sort, heap_sort]
+        
+all_sorts = [bubble_sort.all, 
+            selection_sort.all, 
+            insert_sort.all, 
+            shell_sort.all, 
+            merge_sort.all, 
+            quick_sort.all, 
+            heap_sort.all]
 
 
 def get_all():
