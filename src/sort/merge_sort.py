@@ -42,47 +42,9 @@ def merge(l, start, mid, end, hook_func=None):
         k += 1
         j+= 1
         
-        
-def merge_im(l, start, mid, end, hook_func=None):
-    '''
-    @brief  合并有已经有序的部分，合并区间[left, mid],[mid + 1, end]
-    @param  l   数据
-    @param  left    左边边界
-    @param  end   右边边界
-    @param  mid     中间分割点
-    @param  hook_func   hook函数
-    @note   merge改进当l[mid - 1] < l[mid]表示已经有序
-    '''
-    if l[mid] < l[mid + 1]:
-        return
-        
-    tmp = l.copy()
-    i = start
-    j = mid + 1
-    for k in range(start, end + 1):
-        if hook_func is not None:
-            hook_func(l, start, end, count)
-            global count 
-            count += 1
-            
-        if i <= mid and j <= end:
-            if tmp[i] < tmp[j]:
-                l[k] = tmp[i]
-                i += 1
-            else:
-                l[k] = tmp[j]
-                j += 1
-        else:
-            while i <= mid:
-                l[k] = tmp[i]
-                i += 1
-                
-            while j <= end:
-                l[k] = tmp[j]
-                j += 1
                 
 
-def merge_im_II(l, start, mid, end, hook_func=None):
+def merge_II(l, start, mid, end, hook_func=None):
     '''
     @brief  合并有已经有序的部分，合并区间[left, mid],[mid + 1, end]
     @param  l   数据
@@ -90,28 +52,24 @@ def merge_im_II(l, start, mid, end, hook_func=None):
     @param  end   右边边界
     @param  mid     中间分割点
     @param  hook_func   hook函数
-    @note   merge改进当l[mid] < l[mid + 1]表示已经有序，将后半段按照降序复制到aux中再归并到l中取消对部分边界检测
+    @note   将后半段按照降序复制到aux中再归并到l中取消对部分边界检测
     '''
-    if l[mid] < l[mid + 1]:
-        return
-        
     aux = [0] * len(l)
     for i in range(start, mid + 1):
         aux[i] = l[i]
         
-    for i in range(mid, end + 1):
-        aux[end - i] = l[i]
-        
+    for i in range(mid + 1, end + 1):
+        aux[i] = l[mid + end - i + 1]
+
     i = start
-    j = end + 1
-    for k in range(start, end):
-        if i < j:
-            if aux[i] < aux[j]:
-                l[k] = aux[i]
-                i += 1
-            else:
-                l[k] = aux[j]
-                j -= 1
+    j = end
+    for k in range(start, end + 1):
+        if aux[i] < aux[j]:
+            l[k] = aux[i]
+            i += 1
+        else:
+            l[k] = aux[j]
+            j -= 1
                 
                 
 def merge_sort_top2down(l, start, end, hook_func):
@@ -175,9 +133,9 @@ def merge_sort_down2top(l, start, end, hook_func):
         gap = 2 * gap
         
         
-def merge_sort_top2down_im(l, start, end, hook_func):
+def merge_sort_top2down_II(l, start, end, hook_func):
     '''
-    @brief  自顶向下二路归并排序改进版本
+    @brief  自顶向下二路归并排序，当数组规模小时使用插入排序进行排序
     @param  l   list
     @param  start
     @param  end
@@ -197,8 +155,46 @@ def merge_sort_top2down_im(l, start, end, hook_func):
     
     merge(l, start, mid, end, hook_func)
     
+
+def merge_sort_top2down_III(l, start, end, hook_func):
+    '''
+    @brief  自顶向下二路归并排序，当l[mid] < l[mid + 1]时表明有序不用归并
+    @param  l   list
+    @param  start
+    @param  end
+    @param  hook_func   hook操作函数
+    '''
+    if end < start:
+        return
+        
+    mid = int(start + (end - start)/2)
+    merge_sort_top2down(l, start, mid, hook_func)
+    merge_sort_top2down(l, mid + 1, end, hook_func)
+    if l[mid] < l[mid + 1]: 
+        return
+        
+    merge(l, start, mid, end, hook_func)
     
-def merge_alter(l, aux, start, mid, end, hook_func=None):
+
+def merge_sort_top2down_IV(l, start, end, hook_func):
+    '''
+    @brief  自顶向下二路归并排序，merge时将[mid + 1, end]区域的值反向复制，减少边界检查
+    @param  l   list
+    @param  start
+    @param  end
+    @param  hook_func   hook操作函数
+    '''
+    if end < start:
+        return
+        
+    mid = int(start + (end - start)/2)
+    merge_sort_top2down(l, start, mid, hook_func)
+    merge_sort_top2down(l, mid + 1, end, hook_func)
+        
+    merge_II(l, start, mid, end, hook_func)
+    
+    
+def merge_V(l, aux, start, mid, end, hook_func=None):
     '''
     @brief  合并有已经有序的部分，合并区间[start, mid],[mid + 1, end]
     @param  l   数据
@@ -209,10 +205,8 @@ def merge_alter(l, aux, start, mid, end, hook_func=None):
     @param  hook_func   hook函数
     @note   merge改进当l[mid - 1] < l[mid]表示已经有序，将后半段按照降序复制到aux中再归并到l中取消对部分边界检测，交换使用aux和l
     '''
-    if aux[mid] < aux[mid + 1]: #已经有序
-        return
-        #print('l', str(l[start:mid + 1]), str(l[mid + 1: end + 1]))
-        #print('aux', str(aux[start:mid + 1]), str(aux[mid + 1: end + 1]))
+    #if aux[mid] < aux[mid + 1]: #已经有序
+    #    return
         
     i = start
     j = mid + 1
@@ -243,7 +237,38 @@ def merge_alter(l, aux, start, mid, end, hook_func=None):
 
     pass
     
-def merge_sort_top2down_alter(l, aux, start, end, hook_func):
+def merge_sort_top2down_V(l, aux, start, end, hook_func):
+    '''
+    @brief  自顶向下二路归并排序
+    @param  l   list
+    @param  aux 辅助分支
+    @param  start
+    @param  end
+    @param  hook_func   hook操作函数
+    '''
+    if end <= start:
+        return
+    
+    mid = int(start + (end - start)/2)
+    merge_sort_top2down_V(aux, l, start, mid, hook_func)
+    merge_sort_top2down_V(aux, l, mid + 1, end, hook_func)
+    
+    merge_V(l, aux, start, mid, end, hook_func)
+    
+    
+def merge_sort_V(l, start, end, hook_func):
+    '''
+    @brief  自顶向下二路归并排序
+    @param  l   list
+    @param  start
+    @param  end
+    @param  hook_func   hook操作函数
+    '''
+    aux = l.copy()
+    return merge_sort_top2down_V(l, aux, start, end, hook_func)
+    
+    
+def merge_sort_top2down_VI(l, aux, start, end, hook_func):
     '''
     @brief  自顶向下二路归并排序
     @param  l   list
@@ -255,19 +280,21 @@ def merge_sort_top2down_alter(l, aux, start, end, hook_func):
     '''
     if end <= start:
         return
-        
-    if end - start < 8:            #magic number
+    
+    if end - start < 16:            #magic number
         insert_sort.insert_sort_II(l, start, end, None)
         return
-    
+        
     mid = int(start + (end - start)/2)
-    merge_sort_top2down_alter(aux, l, start, mid, hook_func)
-    merge_sort_top2down_alter(aux, l, mid + 1, end, hook_func)
-    
-    merge_alter(l, aux, start, mid, end, hook_func)
+    merge_sort_top2down_V(aux, l, start, mid, hook_func)
+    merge_sort_top2down_V(aux, l, mid + 1, end, hook_func)
+    if aux[mid] < aux[mid + 1]:
+        return
+        
+    merge_V(l, aux, start, mid, end, hook_func)
     
 
-def merge_sort_alter(l, start, end, hook_func):
+def merge_sort_VI(l, start, end, hook_func):
     '''
     @brief  自顶向下二路归并排序
     @param  l   list
@@ -276,9 +303,9 @@ def merge_sort_alter(l, start, end, hook_func):
     @param  hook_func   hook操作函数
     '''
     aux = l.copy()
-    return merge_sort_top2down_alter(l, aux, start, end, hook_func)
+    return merge_sort_top2down_VI(l, aux, start, end, hook_func)
     
-
+    
 def merge_mult(l, start, mid, end, hook_func):
     '''
     @brief  自顶向下二路归并排序
@@ -332,6 +359,34 @@ def merge_sort_mult(l, start, end, hook_func=None, n=4):
         for i in range(1, n):
             merge_mult(l, mid_list[0], mid_list[i], mid_list[i + 1], hook_func)
         
+
+def merge_sort_mult2(l, start, end, hook_func):
+    return merge_sort_mult(l, start, end, hook_func, 2)
+
+def merge_sort_mult3(l, start, end, hook_func):
+    return merge_sort_mult(l, start, end, hook_func, 3)
+
+def merge_sort_mult4(l, start, end, hook_func):
+    return merge_sort_mult(l, start, end, hook_func, 4)
+
+def merge_sort_mult5(l, start, end, hook_func):
+    return merge_sort_mult(l, start, end, hook_func, 5)
+
+def merge_sort_mult6(l, start, end, hook_func):
+    return merge_sort_mult(l, start, end, hook_func, 6)
+
+def merge_sort_mult7(l, start, end, hook_func):
+    return merge_sort_mult(l, start, end, hook_func, 7)
+
+def merge_sort_mult8(l, start, end, hook_func):
+    return merge_sort_mult(l, start, end, hook_func, 8)
+
+def merge_sort_mult9(l, start, end, hook_func):
+    return merge_sort_mult(l, start, end, hook_func, 9)
+
+def merge_sort_mult10(l, start, end, hook_func):
+    return merge_sort_mult(l, start, end, hook_func, 10)
+    
 def next_unsorted(l, start, end):
     '''
     @brief  寻找出下一个未排序的点
@@ -398,9 +453,28 @@ def merge_link(left, mid, right):
     return ret
     
     
-all = [merge_sort_top2down,
-            merge_sort_down2top,
-            merge_sort_nature,
-            merge_sort_mult,
-            merge_sort_top2down_im,
-            merge_sort_alter]
+merge_sort_std = [merge_sort_top2down,
+            merge_sort_down2top]
+            
+merge_sort_opt = [merge_sort_top2down,
+                merge_sort_top2down_II,
+                merge_sort_top2down_III,
+                merge_sort_top2down_IV,
+                merge_sort_V,
+                merge_sort_VI,
+                ]
+                
+merge_sort_mults = [merge_sort_mult2,
+                    merge_sort_mult3,
+                    merge_sort_mult4,
+                    merge_sort_mult5,
+                    merge_sort_mult6,
+                    merge_sort_mult7,
+                    merge_sort_mult8,
+                    merge_sort_mult9,
+                    merge_sort_mult10
+                    ]
+                    
+merge_others = [merge_sort_nature]
+
+all = [func for l in [merge_sort_std, merge_sort_opt, merge_sort_mults, merge_others] for func in l]

@@ -11,9 +11,9 @@ def vertify_sort_test():
     '''
     验证算法的可行性
     '''
-    func = shell_sort.shell_sort_opt
+    func = merge_sort.all
     count = 10
-    n = 10
+    n = 8
     test.sort.sort_vertify(func, count, n)    
     
     
@@ -22,8 +22,8 @@ def test_sort_visualize():
     @brief  排序算法可视化
     '''
     n = 100
-    sort_func = bubble_sort.bubble_sort
-    visual_func = visualization.bubble_sort_visualization
+    sort_func = merge_sort.merge_sort_down2top
+    visual_func = visualization.merge_sort_down2top_visualization
     path = './img'
     fps = 20
     test.sort.sort_visualization(n, sort_func, visual_func, path, fps)
@@ -31,9 +31,9 @@ def test_sort_visualize():
 
 def test_sort_performance():
     random_dict = list_tools.random_dict.keys()
-    path = 'G:/altas/algorithm-forth/img/sort/performance/shell/opt'
+    path = 'G:/altas/algorithm-forth/img/sort/performance/merge/std'
     file_tools.makesure_path(path)
-    func = shell_sort.shell_sort_opt
+    func = [f for ele in [merge_sort.merge_sort_std, merge_sort.merge_others] for f in ele]
     for key in random_dict:        
         test.sort.test_sort_preformance(path, func, key, count=1000)
     
