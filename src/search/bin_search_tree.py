@@ -256,4 +256,8 @@ class bi_search_tree_II(tree.tree_node):
             
         return no
             
-            
+    def random_key(self, node):
+        '''
+        @brief  返回二叉树中的一个随机节点
+        @note   TODO:unsolved
+        '''
