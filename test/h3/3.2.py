@@ -84,6 +84,6 @@ class search_tree_array(object):
         self.root = []
         self.lefts = []
         self.rights = []
-     
         
+     
         
