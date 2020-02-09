@@ -13,7 +13,7 @@ class sym_table(object):
     def __init__(self):
         super(sym_table, self).__init__()
         
-    def put(self, key, value):
+    def put(self, key):
         pass
         
     def get(self, key):
