@@ -7,6 +7,7 @@ black = False
 class rbtree(object):
     '''
     @brief  每个节点只有一个边是red
+    @note   TODO
     '''
     def __init__(self, key, left, right, color):
         super(rbtree, self).__init__()
@@ -83,6 +84,11 @@ class rbtree(object):
             node = rbtree.rotate_left(node)
             
         return node
+    
+    @staticmethod
+    def insert(root, key):
+        root = rbtree.put(root,key)
+        root.color = black
         
         
         
