@@ -16,6 +16,16 @@ class graph(object):
         '''
         @brief  使用vecs数组构建图
         '''
+    
+    def has_edge(self, v, w):
+        '''
+        @brief  判断v和w之间是否有边
+        '''
+        
+    def find(self, v):
+        '''
+        @brief  找到v对应的节点
+        '''
         
     def v_len(self):
         '''
@@ -84,86 +94,114 @@ class graph(object):
         return count
         
     
-class graph_adj(graph):
+class nodigraph(graph):
     '''
     @brief  无向图的邻接表表示
     '''
     def __init__(self, vecs):
         self.vecs = []      #存储带头节点的链表
         self.es_len = 0
-        super().__init__(vecs)
+        super(nodigraph, self).__init__(vecs)
+        if vecs is None:
+            self.build(self.vecs)
         
     def build(self, vecs):
         for vec in vecs:
-            self.add_e(vec)
+            self.add_e(vec[0], vec[1])
             
+    def find(self, v):
+        for vec in self.vecs():
+            if v == vec.next.data:
+                return vec
+                
+        return None
+        
+    def has_edge(self, v, w):
+        vec = self.find(v)
+        for vec.next is not None:
+            if vec.next.data == w:
+                return True
+                
+        return False
+        
     def add_e(self, v1, v2):
-        head = None
-        v1_added = False
-        v2_added = False
-        for vec in self.vecs:
-            add_vec = None
-            if vec.next.data == v1 or vec.next.data == v2:
-                head = vec
-                add_vec = v1 if vec == v1 v2
-                while head.next is not None:
-                    if head.next.data == add_vec:
-                        return
-                    
-                    head = head.next
-                
-                node = linklist.linklist(add_vec, None)
-                self.es_len += 1
-                if add_vec == v1:
-                    v1_added = True
-                elif add_vec == v2:
-                    v2_added = True
-                    
-                head.next = node
-                
-        if not v1_added:        
-            node = linklist.linklist(v2, None)
-            head = linklist.linklist(None, node)
-            self.vecs.append(head)
-            self.es_len += 1
-        
-        if not v2_added:
+        v1_vec = self.find(v1)
+        v2_vec = self.find(v2)
+        if v1_vec is None and v2_vec is not None:
             node = linklist.linklist(v1, None)
-            head = linklist.linklist(None, node)
+            head = linklist.linlist(None, node)
             self.vecs.append(head)
-            self.es_len += 1
-        
-        def v_len(self):
-            return len(self.vecs)
             
-        def e_len(self):
-            return self.es_len
+            #向v2中添加v1
+            v1_node = linklist.linklist(v1, v2_vec.next.next)
+            v2_vec.next.next = v1_node
+        elif v2_vec is None and v1_vec is not None:
+            node = linklist.linklist(v2, None)
+            head = linklist.linlist(None, node)
+            self.vecs.append(head)
                 
-        def vs(self):
-            return [vec.next.data for vec in self.vecs]
+            #向v1中添加v2
+            v2_node = linklist.linklist(v2, v1_vec.next.next)
+            v1_vec.next.next = v2_node
+        elif v1_vec is None and v2_vec is None:
+            v1_node = linklist.linklist(v1, None)
+            v1_head = linklist.linlist(None, v1_node)
+            self.vecs.append(v1_head)
+
+            #向v2中添加v1
+            v1_node = linklist.linklist(v1, v2_node.next.next)
+            v2_node.next.next = v1_node
+
+            v2_node = linklist.linklist(v2, None)
+            v2_head = linklist.linlist(None, v2_node)
+            self.vecs.append(v2_head)
             
-        def es(self):
-            ret = []
-            for head in self.vecs:
-                index = head
-                while index.next is not None:
-                    ret.append((head.next.data, index.next.data))
-                    index = index.next
+            #向v1中添加v2
+            v2_node = linklist.linklist(v2, v1_node.next.next)
+            v1_node.next.next = v2_node
+        else:
+            if self.has_edge(v1, v2):
+                return
+            else:
+                v1_node = linklist.liklist(v1, v2_vec.next.next)
+                v2_node = linklist.liklist(v2, v1_vec.next.next)
+                
+                v2_vec.next.next = v1_node
+                v1_vec.next.next = v2_node
+                
+        
+        
+    def v_len(self):
+        return len(self.vecs)
+        
+    def e_len(self):
+        return self.es_len
+            
+    def vs(self):
+        return [vec.next.data for vec in self.vecs]
+        
+    def es(self):
+        ret = []
+        for head in self.vecs:
+            index = head
+            while index.next is not None:
+                ret.append((head.next.data, index.next.data))
+                index = index.next
+                
+        return ret
+        
+    def adj(self, v):
+        for vec in self.vec:
+            if vec.next.data == v:
+                i = vec:
+                ret = []
+                while i.next is not None:
+                    ret.append(i.next.data)
+                    i = i.next
                     
-            return ret
-            
-        def adj(self, v):
-            for vec in self.vec:
-                if vec.next.data == v:
-                    i = vec:
-                    ret = []
-                    while i.next is not None:
-                        ret.append(i.next.data)
-                        i = i.next
-                        
-                    return ret
-            
-            return []
+                return ret
+        
+        return []
     
    
 class dfs_graph(object):
@@ -305,6 +343,17 @@ class bfs_paths(object):
                     self.marked[adj] = True
                     q.enqueue(adj)
                 
+    def dst_to(self, v):
+        '''
+        @brief  返回s和v之间的路径长度
+        '''
+        count = 0
+        while v != self.s:
+            v = self.edge_to[v]
+            count += 1
+            
+        return count
+        
     def has_path_to(self, v):
         '''
         @brief  s->v是否有路径
