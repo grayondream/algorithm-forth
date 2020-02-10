@@ -1,4 +1,4 @@
-from src.basic import linklist
+from src.basic import linklist, stack, queue
 
 
 '''
@@ -165,10 +165,12 @@ class graph_adj(graph):
             
             return []
     
-    
-def dfs_graph(object):
+   
+class dfs_graph(object):
     '''
     @brief  深度优先搜索图
+    @param  g   进行搜索的图
+    @param  marked_flags    图中结点是否进行搜索的标志
     '''
     def __init__(g):
         self.count = 0
@@ -183,11 +185,236 @@ def dfs_graph(object):
     def get_count(self):
         return self.count
         
-    def dfs(self, v):
-        for vec in self.g.vs():
+    def dfs(self):
+        for vec in self.gs.vs():
             if not self.marked(vec):
-                for adj in self.g.adj():
-                    if not self.marked(adj):
+                self.dfs_v(vec)
+                
+    def dfs_v(self, v):
+        for adj in self.g.adj(v):
+            if not self.marked(adj):
+                self.count += 1
+                self.marked_flags[v] = True
+                self.dfs_v(adj)
+                        
+                        
+class dfs_paths(object):
+    '''
+    @brief 从已知的graph中搜索出顶点s相关路径，只能保证找到路径
+    @param g    进行搜索的图
+    @param  s   图中进行搜索的顶点
+    @param  marked_flags    顶点和s之间是否有path的标志
+    @param  edge_to key为节点，value为当前结点的父节点
+    '''
+    def __init__(self, g, s):
+        self.s = s
+        self.marked_flags = {}
+        self.edge_to = {}
+        self.g = g
+        for v in self.g.vs():
+            self.marked_flags[v] = False
+            
+        self.dfs(self.g, s)
+        
+    def dfs(self, g, v):
+        self.marked_flags[v] = True
+        for w in g.adj(v):
+            if self.marked_flags[w]:
+                self.edge_to[w] = v
+                dfs(g, w)
+                
+    def has_path_to(self, v):
+        '''
+        @brief  s->v是否有路径
+        '''
+        return self.marked_flags[v]
+        
+    def path_to(self, v):
+        '''
+        @brief  s到v的路径
+        '''
+        if self.has_path_to(v):
+            path = stack.stack()
+            while v != self.s:
+                path.push(v)
+                v = self.edge_to[v]
+                
+            path.push(self.s)
+        
+        return path
+        
+        
+class bfs_graph(object):
+    '''
+    @brief  图的广度优先搜索算法
+    @param  marked  是否访问过
+    @param  s 起点
+    @note   类似于树的按层遍历
+    '''
+    def __int__(self, g):
+        self.marked = {}
+        self.g = g
+        self.count = 0
+        for v in g.vs():
+            self.marked[v] = False
+            
+    def bfs(self):
+        q = queue.queue()
+        for v in self.v.vs():
+            if self.marked[v]:
+                continue
+                
+            q.enqueue(v)
+            self.marked[v] = True
+            while not q.empty():
+                v = q.dequeue()
+                for adj in self.g.adj(v):
+                    if not self.marked[adj]:
+                        self.marked[adj] = True
+                        q.enqueue(adj)
                         self.count += 1
-                        self.marked_flags[v] = True
-                        dfs(adj)
+                        
+                        
+class bfs_paths(object):
+    '''
+    @brief 从已知的graph中搜索出顶点s相关路径，只能保证找到路径
+    @param g    进行搜索的图
+    @param  s   图中进行搜索的顶点
+    @param  marked_flags    顶点和s之间是否有path的标志
+    @param  edge_to key为节点，value为当前结点的父节点
+    '''
+    def __init__(self, g, s):
+        self.s = s
+        self.marked_flags = {}
+        self.edge_to = {}
+        self.g = g
+        for v in self.g.vs():
+            self.marked_flags[v] = False
+            
+        self.bfs(self.g, s)
+        
+    def bfs(self, g, v):
+        q = queue.queue()
+        q.enqueue(v)
+        self.marked[v] = True
+        while not q.empty():
+            v = q.dequeue()
+            for adj in g.adj(v):
+                if not self.marked[adj]:
+                    self.edgs_to[adj] = v
+                    self.marked[adj] = True
+                    q.enqueue(adj)
+                
+    def has_path_to(self, v):
+        '''
+        @brief  s->v是否有路径
+        '''
+        return self.marked_flags[v]
+        
+    def path_to(self, v):
+        '''
+        @brief  s到v的路径
+        '''
+        if self.has_path_to(v):
+            path = stack.stack()
+            while v != self.s:
+                path.push(v)
+                v = self.edge_to[v]
+                
+            path.push(self.s)
+        
+        return path
+        
+        
+class graph_cc(object):
+    '''
+    @brief  
+    @param  g   进行搜索的图
+    @param  count   联通分量个数
+    '''
+    
+    def __init__(self, g):
+        self.g = g
+        self.cc_ids = [0] * self.g.v_len()
+        self.count = 0
+        self.marked = {}
+        for v in self.g.vs():
+            self.marked[v] = False
+
+        self.dfs(self.g)
+            
+    def connect(self, v, w):
+        '''
+        @brief  v和w是否联通
+        '''
+        return self.cc_ids[v] == self.cc_ids[w]
+    
+    def dfs(self, g):
+        for v in g.vs():
+            if not self.marked[v]:
+                self.count += 1
+                self.dfs_v(g, v)
+                self.id[v] = self.count
+                
+    def dfs_v(self, g, vec):
+        self.marked[v] = True
+        for adj in g.adj(v):
+            if not self.marked[adj]:
+                self.dfs(g, adj)
+                
+
+class graph_cycle(object):
+    '''
+    @brief  判断图中是否包含环，假定不包含自环和平行边
+    '''
+    def __init__(self, g):
+        self.marked = {}
+        self.g = g
+        for v in self.g.vs():
+            self.marked[v] = False
+            
+    def dfs(self, g):
+        for v in g.vs():
+            if not self.marked[v]:
+                if self.dfs_v(g, v, v):
+                    return True
+            
+    def dfs_v(self, g, v, w):
+        self.marked[v] = True
+        for adj in g.adj():
+            if not self.marked[v]:
+                self.dfs_v(g, w, v)
+            elif w == adj:
+                return True
+                
+        return False
+        
+        
+class graph2color(object):
+    '''
+    @brief  双色问题，将每个节点染色，是否能够保证相邻节点的颜色不同
+    '''
+    def __init__(self, g):
+        self.marked = {}
+        self.colors = {}
+        self.g = g
+        for v in self.g.vs():
+            self.marked[v] = False
+            self.colors[v] = False
+            
+    def dfs(self, g):
+        for v in g.vs():
+            if not self.marked[v]:
+                if not self.dfs_v(g, v):
+                    return False
+            
+    def dfs_v(self, g, v):
+        self.marked[v] = True
+        for adj in g.adj():
+            if not self.marked[v]:
+                self.dfs_v(g, adj)
+                self.color[adj] = !self.color[v]
+            elif self.color[adj] == self.color[v]:
+                return False
+                
+        return True
