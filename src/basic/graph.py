@@ -328,6 +328,7 @@ class bfs_paths(object):
         self.g = g
         for v in self.g.vs():
             self.marked_flags[v] = False
+            self.edge_to[v] = None
             
         self.bfs(self.g, s)
         
@@ -433,7 +434,7 @@ class graph_cycle(object):
         for adj in g.adj():
             if not self.marked[v]:
                 self.dfs_v(g, w, v)
-            elif w == adj:
+            elif w != adj:
                 return True
                 
         return False
