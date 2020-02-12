@@ -260,10 +260,10 @@ class max_queue_order(max_queue_array):
     def __init__(self):
         super(max_queue_order, self).__init__()
         
-    def insert(self, item):
+    def insert(self, item, bigger):
         self.data.append(item)
         i = self.size() - 1
-        while i > 0 and self.data[i] > item:
+        while i > 0 and bigger(self.data[i], item):
             self.data[i], self.data[i - 1] = self.data[i - 1], self.data[i]
             
         self.data[i] = item
@@ -274,6 +274,29 @@ class max_queue_order(max_queue_array):
     def min(self):
         return self.data[0]
         
+    def delmax(self):
+        tmp = self.data[-1]
+        del self.data[-1]
+        return tmp
+        
+    def delmin(self):
+        tmp = self.data[0]
+        del self.data[0]
+        return tmp
+        
+    def find(self, item, equal):
+        for i in range(len(self.data)):
+            if equal(self.data[i], item):
+                return i
+        
+        return -1
+        
+    def contain(self, item, equal):
+        return self.find(item, equal) != -1
+        
+    def replace(self, item, equal):
+        i = self.find(item, equal)
+        self.data[i] = item
         
 class max_queue_unorder(max_queue_array):
     '''
