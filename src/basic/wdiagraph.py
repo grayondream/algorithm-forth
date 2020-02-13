@@ -1,4 +1,4 @@
-from src.basic import linklist, heap
+from src.basic import linklist, heap, digraph
 
 class wedge(self):
     '''
@@ -139,3 +139,92 @@ class dijkstra_sp(shortest_path):
                 else:
                     self.sp_q.insert((e.end, self.dist_to[e.end]))
     
+    
+class acycleic_sp(object):
+    '''
+    @brief  有向无环最短路径
+    '''
+    def __init__(self, g, s):
+        super().__init__()
+        self.edage_to = {}
+        self.dist_to = {}
+        for v in g.vs():
+            self.dist_to[v] = 10000 #should be MAX_INT
+        
+        self.dist_to[s] = 0
+        topo = digraph.topolog_dfs(g)
+        order = topo.get_order()
+        for v in order:
+            self.v_relax(g, v)
+            
+    def v_relax(self, g, v):
+        for e in g.adj(v):
+            if self.distto[v] + e.weight < self.distto[e.end]:
+                self.distto[e.end] = self.distto[v] + e.weight
+                self.edage_to[e.end] = e
+                if self.sp_q.contain(e.end):
+                    self.sp_q.replace((e.end, self.dist_to[e.end]), equal)
+                else:
+                    self.sp_q.insert((e.end, self.dist_to[e.end]))
+                    
+
+class dijkstra_cpm(shortest_path):
+    '''
+    @brief  dijkstra最长路径算法，关键路径
+    '''
+    def __init__(self, g, s):
+        super().__init__(g, s)
+        self.edage_to = {}
+        self.dist_to = {}
+        self.sp_q = heap.max_queue_order()
+        
+    def sp(self, g, s):
+        for v in self.vs():
+            self.dist_to[v] = 1000#should be INT_MAX
+        
+        self.dist_to[s] = 0
+        self.sp_q.insert((s, 0))
+        while not self.sp_q.empty():
+            self.v_relax(g, self.sp_q.delmin())
+            
+    def v_tight(self, g, v):
+        for e in g.adj(v):
+            if self.distto[v] + e.weight > self.distto[e.end]:
+                self.distto[e.end] = self.distto[v] + e.weight
+                self.edage_to[e.end] = e
+                if self.sp_q.contain(e.end):
+                    self.sp_q.replace((e.end, self.dist_to[e.end]), equal)
+                else:
+                    self.sp_q.insert((e.end, self.dist_to[e.end]))
+                    
+                    
+class ford_sp(shortest_path):
+    '''
+    @brief  dijkstra最短路径算法
+    @note:  TODO:很多还没弄明白
+    '''
+    def __init__(self, g, s):
+        super(ford_sp, self).__init__(g, s)
+        self.edage_to = {}
+        self.dist_to = {}
+        self.sp_q = heap.max_queue_order()
+        
+    def sp(self, g, s):
+        for v in self.vs():
+            self.dist_to[v] = 1000#should be INT_MAX
+        
+        self.dist_to[s] = 0
+        self.sp_q.insert((s, 0))
+        for i in g.vs():
+            for v in g.vs():
+                for adj in g.adj(v):
+                    self.e_relax(adj)
+            
+    def e_relax(self, e):
+        if self.distto[e.start] + e.weight < self.distto[e.end]:
+            self.distto[e.end] = self.distto[e.start] + e.weight
+            self.edage_to[e.end] = e
+            if self.sp_q.contain(e.end):
+                self.sp_q.replace((e.end, self.dist_to[e.end]), equal)
+            else:
+                self.sp_q.insert((e.end, self.dist_to[e.end]))

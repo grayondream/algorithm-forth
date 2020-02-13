@@ -463,7 +463,7 @@ class graph2color(object):
         for adj in g.adj():
             if not self.marked[v]:
                 self.dfs_v(g, adj)
-                self.color[adj] = !self.color[v]
+                self.color[adj] = !self.colors[v]
             elif self.color[adj] == self.color[v]:
                 return False
                 
