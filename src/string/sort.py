@@ -76,11 +76,13 @@ class msd(object):
     def less(self, rst, snd, d):
         return rst[d:] < snd[d:]
         
+
 class quick3string(object):
     '''
     @brief  算法原理类似于快速三项切分
     '''
     def __init__(self, l):
+        pass
     
     def chart_at(self, l, id):
         if d < len(l):
