@@ -1,6 +1,8 @@
+#coding=utf-8
 from tools import list_tools, visualization, performance, file_tools
 from src.search import binary_search
 from src.sort import bubble_sort, insert_sort, shell_sort, selection_sort, merge_sort, quick_sort, heap_sort
+from src.string.kmp import kmp_test
 import random
 import os
 from matplotlib import pyplot as plt
@@ -41,7 +43,9 @@ def test_sort_performance():
 def main():
     #vertify_sort_test()
     #test_sort_visualize()
-    test_sort_performance()
+    #test_sort_performance()
+    kmp_test()
+    
     
 if __name__ == '__main__':
     main()
