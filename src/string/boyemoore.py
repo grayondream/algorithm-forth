@@ -1,31 +1,40 @@
-class boyemoore:
-    def __init__(self, pat):
-        self.pat = pat
-        m = len(pat)
-        r = 256
-        self.right = [-1] * r
-        for i in range(m):
-            self.right[pat[i]] = j
-            
-    def search(self, txt):
-        n = len(txt)
-        m = len(self.pat)
+
+def get_right(pat, r=256):
+    right = [-1] * r
+    for i in range(len(pat)):
+        right[ord(pat[i])] = i
+        
+    return right
+    
+
+def boyemoore_search(txt, pat):
+    right = get_right(pat)
+    skip = 0
+    i = 0
+    while i <= len(txt) - len(pat):
         skip = 0
-        i = 0
-        while i <= n - m:
-            skip = 0
-            j = m - 1
-            while j >= 0:
-                if self.pat[j] != txt[i + j]:
-                    skip = j - self.right[txt[i + j]]
-                    if skip < 1:
-                        skip = 1
-                    break
-                j -= 1
+        j = len(pat) - 1
+        while j >= 0:
+            if pat[j] != txt[i + j]:
+                skip = j - right[ord(txt[i + j])]
+                if skip < 1:
+                    skip = 1
+                break
             
-            if 0 == skip:
-                return i
-                
-            i += skip
+            j -= 1
             
-        return n
+        if skip == 0:
+            return i
+        
+        i += skip
+            
+    return len(txt)
+        
+        
+def boyemoore_test():
+    txt = 'abcabcabdabcabcabc'
+    pat = 'abcabcabc'
+    ret = boyemoore_search(txt, pat)
+    print(ret)
+    print(txt[ret:])
+    

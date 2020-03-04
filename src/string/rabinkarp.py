@@ -1,29 +1,72 @@
-class rabinkarp:
-    def __init__(self, pat):
-        self.m = len(pat)
-        self.pat = pat
-        self.q = 0#longrandomprime()
-        self.rm = 1
-        i = 1
-        while i <= self.m -1:
-            self.rm = (self.r * self.rm) % self.q
-            i += 1
-        self.pat_hash = self.hash(self.pat, self.m)
+
+
+def get_primes(n):
+    '''
+    @brief  埃拉托斯特尼筛法,生成素数表
+    '''
+    origin = [1] * n
+    origin[0], origin[1] = 0, 0
+    for i in range(2, int(pow(n, 0.5)) + 1):
+        if origin[i] == 1:
+            origin[i * i::i] = [0] * len(origin[i * i::i])
+    return [idx for idx, i in enumerate(origin) if i == 1]
+
+
+def long_random_prime():
+    return 9999991
+    
+    
+def hash(line, big_prime, r=256):
+    hcode = 0
+    for i in range(0, len(line)):
+        hcode = (r * hcode + ord(line[i])) % big_prime
         
-    def check(self, i):
-        return True
+    return hcode
+    
+    
+def alwayes_matched(txt, pat):
+    return True
+    
+    
+def check_matched(txt, pat):
+    print(txt, pat)
+    return txt == pat
+    
+
+def rabinkarp(txt, pat, is_matched_func, r=256):
+    big_prime = long_random_prime()
+    txt_code = hash(txt, big_prime, r)
+    pat_code = hash(pat, big_prime, r)
+    if txt_code == pat_code and is_matched_func(txt, pat):
+        return 0        #pat == txt
+    
+    rm = 1
+    for i in range(1, len(pat)):
+        rm = (r * rm) % big_prime
         
-    def search(self, txt):
-        n = len(txt)
-        txt_hash = self.hash(txt, self.m)
-        if self.pat_hash == self.txt_hash and self.check(0):
-            return 0
-        
-        for i in range(self.m, n):
-            txt_hash = (txt_hash + self.q - self.rm * txt[i - self.m] % self.q) % self.q
-            txt_hash = (txt_hash * self.r + txt[i]) % self.q
-            if self.pat_hash == self.txt_hash:
-                if self.check(i -m + i):
-                    return i - m + 1
-                    
-        return n
+    for i in range(len(pat), len(txt)):
+        txt_code = (txt_code + big_prime - rm * ord(txt[i - len(pat)]) % big_prime) % big_prime
+        txt_code = (txt_code * r + ord(txt[i])) % big_prime
+        if pat_code == txt_code and is_matched_func(txt[i - len(pat) + 1:i + 1], pat):
+            return i - len(pat) + 1
+            
+    return len(txt)
+            
+    
+def rabinkarp_m(txt, pat):
+    '''
+    @brief  蒙特卡洛方法
+    '''
+    return rabinkarp(txt, pat, alwayes_matched)
+    
+
+def rabinkarp_l(txt, pat):
+    return rabinkarp(txt, pat, check_matched)
+    
+    
+def rabinkarp_test():
+    txt = 'abcabcabdabcabcabc'
+    pat = 'abcabcabc'
+    ret = rabinkarp_l(txt, pat)
+    print(ret)
+    print(txt[ret:])

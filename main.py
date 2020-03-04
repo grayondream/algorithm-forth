@@ -3,6 +3,8 @@ from tools import list_tools, visualization, performance, file_tools
 from src.search import binary_search
 from src.sort import bubble_sort, insert_sort, shell_sort, selection_sort, merge_sort, quick_sort, heap_sort
 from src.string.kmp import kmp_test
+from src.string.boyemoore import boyemoore_test
+from src.string.rabinkarp import rabinkarp_test
 import random
 import os
 from matplotlib import pyplot as plt
@@ -44,8 +46,9 @@ def main():
     #vertify_sort_test()
     #test_sort_visualize()
     #test_sort_performance()
-    kmp_test()
-    
+    #kmp_test()
+    #boyemoore_test()    
+    rabinkarp_test()
     
 if __name__ == '__main__':
     main()
