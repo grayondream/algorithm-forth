@@ -36,9 +36,9 @@ def test_sort_visualize():
 
 def test_sort_performance():
     random_dict = list_tools.random_dict.keys()
-    path = 'G:/altas/algorithm-forth/img/sort/performance/merge/std'
+    path = './img/sort/performance/quick'
     file_tools.makesure_path(path)
-    func = [f for ele in [merge_sort.merge_sort_std, merge_sort.merge_others] for f in ele]
+    func = quick_sort.all
     for key in random_dict:        
         test.sort.test_sort_preformance(path, func, key, count=1000)
     
@@ -46,11 +46,11 @@ def test_sort_performance():
 def main():
     #vertify_sort_test()
     #test_sort_visualize()
-    #test_sort_performance()
+    test_sort_performance()
     #kmp_test()
     #boyemoore_test()    
     #rabinkarp_test()
-    compare.compare_test()
+    #compare.compare_test()
     
     
 if __name__ == '__main__':

@@ -1,4 +1,6 @@
 import os
+import platform
+
 
 def makesure_path(path):
     if not os.path.exists(path):
@@ -6,7 +8,13 @@ def makesure_path(path):
         
     
 def get_func_name(func):
-    return str(func)[10:-23]
+    plat = platform.system().lower()
+    if plat == 'linux':
+        return str(func)[10:-19]
+    elif plat == 'windows':
+        return str(func)[10:-23]
+    else:
+        raise Exception(plat)
     
     
 def get_file_ext(filename):
