@@ -15,9 +15,10 @@ def create_dfa(pat):
         j += 1
     return dfa
     
-def search(txt, pat, dfa):
+def kmp_dfa(txt, pat):
     i = 0
     j = 0
+    dfa = create_dfa(pat)
     n = len(txt)
     m = len(pat)
     while i < n and j < m:

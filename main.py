@@ -9,6 +9,7 @@ import random
 import os
 from matplotlib import pyplot as plt
 from test import test
+from src.string import compare
 
 
 def vertify_sort_test():
@@ -48,7 +49,9 @@ def main():
     #test_sort_performance()
     #kmp_test()
     #boyemoore_test()    
-    rabinkarp_test()
+    #rabinkarp_test()
+    compare.compare_test()
+    
     
 if __name__ == '__main__':
     main()

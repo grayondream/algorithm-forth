@@ -13,7 +13,7 @@ def get_primes(n):
 
 
 def long_random_prime():
-    return 9999991
+    return 121461810980405772771175611270843884000507802617010592057054218483258626678101103820926110565823269240433607391822175172403272239136199088141179467742900111960579379552996372680978058346702525397940161911461633009865733654996981492831594146175519276801093888903332607532190216271689437619073359758499365149323
     
     
 def hash(line, big_prime, r=256):
@@ -29,13 +29,12 @@ def alwayes_matched(txt, pat):
     
     
 def check_matched(txt, pat):
-    print(txt, pat)
     return txt == pat
     
 
 def rabinkarp(txt, pat, is_matched_func, r=256):
     big_prime = long_random_prime()
-    txt_code = hash(txt, big_prime, r)
+    txt_code = hash(txt[0:len(pat)], big_prime, r)
     pat_code = hash(pat, big_prime, r)
     if txt_code == pat_code and is_matched_func(txt, pat):
         return 0        #pat == txt
@@ -61,6 +60,9 @@ def rabinkarp_m(txt, pat):
     
 
 def rabinkarp_l(txt, pat):
+    '''
+    @brief  拉斯维加斯算法
+    '''
     return rabinkarp(txt, pat, check_matched)
     
     
