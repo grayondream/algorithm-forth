@@ -131,7 +131,7 @@ def sink_nway(l, start, end, k, n, com_func):
     @param  com_func    比较函数
     @note   parent  k   child   n*k+1~n*k+n
     '''
-    def find_first_less(l, k, n):
+    def find_first_less(l, k, n, end):
         '''
         @brief  找到第一个不符合条件的当前元素l[k]的子结点的下标
         @param  l   list
@@ -139,19 +139,26 @@ def sink_nway(l, start, end, k, n, com_func):
         @param  n   n-way
         @return 第一个小于l[k]的index
         '''
-        for i in range(1, n + 1):
-            if not com_func(l[k], l[i]):
-                return i
+        ret = k
+        for i in range(n * k + 1, n * k + n + 1):
+            if i > end:
+                break
                 
-        return -1
-    sent = l[k]
-    child = find_first_less(l, k, n)
-    while k < end and child != -1:
-        l[child] = l[k]
-        k = child
-        child = find_first_less(l, k, n)
-    
-    l[k] = sent
+            if com_func(l[i], l[ret]):
+                ret = i
+        
+        if ret == k:
+            return -1
+            
+        return ret
+        
+    while k < end:
+        i = find_first_less(l, k, n, end)
+        if i == -1 or i > end or com_func(l[k], l[i]):
+            break
+            
+        l[i], l[k] = l[k], l[i]
+        k = i
     
     
 def is_big_heap(l, start, end):

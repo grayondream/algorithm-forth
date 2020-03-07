@@ -16,42 +16,43 @@ def vertify_sort_test():
     '''
     验证算法的可行性
     '''
-    func = merge_sort.all
-    count = 10
-    n = 8
-    test.sort.sort_vertify(func, count, n)    
-    
-    
+    func = heap_sort.all
+    #func = test.sort.get_all()
+    count = 100
+    n = 100
+    test.sort.sort_vertify(func, count, n)
+
+
 def test_sort_visualize():
     '''
     @brief  排序算法可视化
     '''
     n = 100
-    sort_func = merge_sort.merge_sort_down2top
-    visual_func = visualization.merge_sort_down2top_visualization
-    path = './img'
+    sort_func = heap_sort.heap_sort_sink7
+    visual_func = visualization.heap_sort_visualization
+    path = './img/'
     fps = 20
     test.sort.sort_visualization(n, sort_func, visual_func, path, fps)
 
 
 def test_sort_performance():
     random_dict = list_tools.random_dict.keys()
-    path = './img/sort/performance/quick'
+    path = './img/sort/performance/heap'
     file_tools.makesure_path(path)
-    func = quick_sort.all
-    for key in random_dict:        
+    func = heap_sort.all
+    for key in random_dict:
         test.sort.test_sort_preformance(path, func, key, count=1000)
-    
-    
+
+
 def main():
     #vertify_sort_test()
-    #test_sort_visualize()
-    test_sort_performance()
+    test_sort_visualize()
+    #test_sort_performance()
     #kmp_test()
-    #boyemoore_test()    
+    #boyemoore_test()
     #rabinkarp_test()
     #compare.compare_test()
-    
-    
+
+
 if __name__ == '__main__':
     main()

@@ -7,27 +7,24 @@ from tools.iostream import printw
 import os
 import matplotlib.pyplot as plt
 
-        
-all_sorts = [bubble_sort.all, 
-            selection_sort.all, 
-            insert_sort.all, 
-            shell_sort.all, 
-            merge_sort.all, 
-            quick_sort.all, 
-            heap_sort.all]
+all_sorts = [
+    bubble_sort.all, selection_sort.all, insert_sort.all, shell_sort.all,
+    merge_sort.all, quick_sort.all, heap_sort.all
+]
 
 
 def get_all():
     return [func for ele in all_sorts for func in ele]
-            
+
+
 def get_standard():
     '''
     只获取标准的需要进行可视化的排序函数
     '''
     ret = [ele[0] for ele in all_sorts]
     return ret
-    
-    
+
+
 def sort_vertify(funcs, count=100, n=100):
     '''
     @brief  验证算法的可行性
@@ -46,19 +43,21 @@ def sort_vertify(funcs, count=100, n=100):
             data_copy.sort()
             if data != data_copy:
                 error += 1
-                
+
         end = time.clock()
-        ratio = (count - error)/count * 100
-        line = '%25s: failed %03d, successed %03d, ratio:%03d%s%%, cost time: %fs' % (func_name, error, count - error, int(ratio), ('%.2f' % (ratio - int(ratio)))[1:], end - start)
+        ratio = (count - error) / count * 100
+        line = '%25s: failed %03d, successed %03d, ratio:%03d%s%%, cost time: %fs' % (
+            func_name, error, count - error, int(ratio),
+            ('%.2f' % (ratio - int(ratio)))[1:], end - start)
         color = None
         if ratio != 100:
             color = 'red'
         else:
             color = 'green'
-            
+
         printw(line, color, None)
 
-    
+
 def sort_visualization(n, sort_func, visual_func, path, fps=20):
     '''
     @brief  排序算法流程可视化
@@ -70,8 +69,9 @@ def sort_visualization(n, sort_func, visual_func, path, fps=20):
     l = list_tools.generate_list(n, 1, n)
     sort_func(l, 0, len(l) - 1, visual_func)
     desc = file_tools.get_func_name(sort_func)
-    visualization.generate_gif_dir(os.path.join(path, desc), os.path.join(path, '%s.gif' % desc), fps=fps)
-    
+    visualization.generate_gif_dir(
+        os.path.join(path, desc), os.path.join(path, '%s.gif' % desc), fps=fps)
+
 
 def test_sort_preformance(path, sort_funcs, random_index, count=1000):
     '''
@@ -80,25 +80,29 @@ def test_sort_preformance(path, sort_funcs, random_index, count=1000):
     total_times = []
     ranges = range(10, count, 10)
     for n in ranges:
-        times = performance.sort_performance(n, sort_funcs, random_index, repeat=5)    
+        times = performance.sort_performance(
+            n, sort_funcs, random_index, repeat=5)
         total_times.append(times)
         print(n)
-            
+
     plt.figure(dpi=200, figsize=(16, 9))
     plt.title(random_index)
     plt.xlabel('number')
     plt.ylabel("time(s)")
-    
+
     for i in range(len(total_times[0])):
-        plt.plot(list(ranges), [ele[i] for ele in total_times], label=str(file_tools.get_func_name(sort_funcs[i])))
-    
+        plt.plot(
+            list(ranges), [ele[i] for ele in total_times],
+            label=str(file_tools.get_func_name(sort_funcs[i])))
+
     plt.legend()
     plt.savefig(os.path.join(path, random_index + '.png'))
     #plt.show()
-    
-    
+
+
 def main():
     pass
-    
+
+
 if __name__ == '__main__':
     main()
