@@ -23,6 +23,7 @@ def build_heap_sink(l, start, end, hook_func, com_func):
             global count
             count += 1
         i -= 1
+    return l
 
 
 def heap_sort_sink(l, start, end, hook_func):
@@ -38,7 +39,7 @@ def heap_sort_sink(l, start, end, hook_func):
         hook_func(l, start, end, count)
         global count
         count += 1
-        
+
     build_heap_sink(l, start, end, hook_func, heap.bigger)
     if hook_func is not None:
         hook_func(l, start, end, count)
@@ -57,6 +58,8 @@ def heap_sort_sink(l, start, end, hook_func):
             hook_func(l, start, end, count)
             global count
             count += 1
+
+    return l
 
 
 def build_heap_sinkn(l, start, end, hook_func, com_func, n):
@@ -113,6 +116,7 @@ def heap_sort_sinkn(l, start, end, n, hook_func):
             hook_func(l, start, end, count)
             global count
             count += 1
+    return l
 
 
 def heap_sort_sink2(l, start, end, hook_func):

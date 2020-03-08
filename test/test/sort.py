@@ -1,5 +1,5 @@
 from tools import list_tools
-from src.sort import bubble_sort, selection_sort, insert_sort, shell_sort, merge_sort, quick_sort, heap_sort
+from src.sort import bubble_sort, selection_sort, insert_sort, shell_sort, merge_sort, quick_sort, heap_sort, bucket_sort
 import time
 from tools import file_tools, visualization, performance
 import platform
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 all_sorts = [
     bubble_sort.all, selection_sort.all, insert_sort.all, shell_sort.all,
-    merge_sort.all, quick_sort.all, heap_sort.all
+    merge_sort.all, quick_sort.all, heap_sort.all, bucket_sort.all
 ]
 
 
@@ -39,7 +39,7 @@ def sort_vertify(funcs, count=100, n=100):
         for i in range(count):
             data = list_tools.generate_list(n, 0, n)
             data_copy = data.copy()
-            func(data, 0, len(data) - 1, None)
+            data = func(data, 0, len(data) - 1, None)
             data_copy.sort()
             if data != data_copy:
                 error += 1

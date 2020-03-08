@@ -29,6 +29,7 @@ def shell_sort(l, start, end, hook_func=None):
                 j -= k
         
         k = int(k/3)
+    return l
     
 
 def shell_sort_custom(l, start, end, k_list, hook_func=None):
@@ -58,6 +59,7 @@ def shell_sort_custom(l, start, end, k_list, hook_func=None):
                 j -= k_list[k]
         
         k -= 1
+    return l
     
 def shell_sort_custom_sent(l, start, end, k_list, hook_func=None):
     '''
@@ -89,6 +91,7 @@ def shell_sort_custom_sent(l, start, end, k_list, hook_func=None):
             l[j] = sent
             
         k -= 1
+    return l
         
 
 def shell_sort_custom_bin(l, start, end, k_list, hook_func=None):
@@ -139,6 +142,7 @@ def shell_sort_custom_bin(l, start, end, k_list, hook_func=None):
             l[left] = sent
             
         k -= 1
+    return l
         
         
 '''
@@ -146,25 +150,25 @@ def shell_sort_custom_bin(l, start, end, k_list, hook_func=None):
 '''
 def shell_sort_geo_sent(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc)
-    shell_sort_custom_sent(l, start, end, k_list, hook_func)
+    return shell_sort_custom_sent(l, start, end, k_list, hook_func)
     
 def shell_sort_geo_bin(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc)
-    shell_sort_custom_bin(l, start, end, k_list, hook_func)
+    return shell_sort_custom_bin(l, start, end, k_list, hook_func)
 
 def shell_sort_normal(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_normal)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
     
     
 def shell_sort_poly1(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_poly1)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
     
     
 def shell_sort_poly2(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_poly2)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
     
     
 def shell_sort_poly12(l, start, end, hook_func):
@@ -172,51 +176,51 @@ def shell_sort_poly12(l, start, end, hook_func):
     @brief  这个版本有缺陷，因为k_list有限，元素不能过多
     '''
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_poly12)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
     
     
 def shell_sort_geo(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
     
 '''
 t^k 2-10相关函数定义
 '''
 def shell_sort_geo2(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=2)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
 
 def shell_sort_geo3(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=3)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
 
 def shell_sort_geo4(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=4)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
 
 def shell_sort_geo5(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=5)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
 
 def shell_sort_geo6(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=6)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
     
 def shell_sort_geo7(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=7)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
     
 def shell_sort_geo8(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=8)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
     
 def shell_sort_geo9(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=9)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
 
 def shell_sort_geo10(l, start, end, hook_func):
     k_list = shell_step.get_shell_steps(end - start + 1, shell_step.shell_step_geo_inc, t=10)
-    shell_sort_custom(l, start, end, k_list, hook_func)
+    return shell_sort_custom(l, start, end, k_list, hook_func)
 
 def shell_test(dat, k_list):
     while k_list[len(k_list) - 1] > len(dat):

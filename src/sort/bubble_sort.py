@@ -1,5 +1,3 @@
-            
-
 def bubble_sort(l, start, end, hook_func=None):
     '''
     @brief  冒泡排序算法，排序区间[start, end]
@@ -14,9 +12,11 @@ def bubble_sort(l, start, end, hook_func=None):
             if hook_func is not None:
                 hook_func(l, i, j, count)
                 count += 1
-                
+
             if l[j] > l[j + 1]:
                 l[j + 1], l[j] = l[j], l[j + 1]
+
+    return l
 
 
 def bubble_sort_II(l, start, end, hook_func=None):
@@ -36,15 +36,16 @@ def bubble_sort_II(l, start, end, hook_func=None):
             if hook_func is not None:
                 hook_func(l, i, j, count)
                 count += 1
-                
+
             if l[j] > l[j + 1]:
                 l[j + 1], l[j] = l[j], l[j + 1]
                 sorted = False
-                
+
         if sorted:
             break
-        
-        
+    return l
+
+
 def bubble_sort_III(l, start, end, hook_func=None):
     '''
     @brief  冒泡排序算法，排序区间[start, end]
@@ -64,16 +65,17 @@ def bubble_sort_III(l, start, end, hook_func=None):
             if hook_func is not None:
                 hook_func(l, i, j, count)
                 count += 1
-                
+
             if l[j] > l[j + 1]:
                 l[j + 1], l[j] = l[j], l[j + 1]
                 sorted = False
                 last_swap_index = j
-                
+
         sorted_border = last_swap_index
         if sorted:
             break
 
-all = [bubble_sort, 
-            bubble_sort_II, 
-            bubble_sort_III]
+    return l
+
+
+all = [bubble_sort, bubble_sort_II, bubble_sort_III]

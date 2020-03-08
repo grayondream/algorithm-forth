@@ -1,6 +1,3 @@
-
-
-
 def selection_sort(l, start, end, hook_func=None):
     '''
     @brief  选择排序算法[start, end]
@@ -16,12 +13,13 @@ def selection_sort(l, start, end, hook_func=None):
             if hook_func is not None:
                 hook_func(l, i, j, count)
                 count += 1
-                
+
             if l[minindex] > l[j]:
                 minindex = j
-            
+
         l[minindex], l[i] = l[i], l[minindex]
-    
+    return l
+
 
 def selection_sort_II(l, start, end, hook_func=None):
     '''
@@ -43,18 +41,19 @@ def selection_sort_II(l, start, end, hook_func=None):
 
             if l[max_index] < l[j]:
                 max_index = j
-                
+
         if max_index != right:
             l[max_index], l[right] = l[right], l[max_index]
-            
-        if min_index == right:      
+
+        if min_index == right:
             min_index = max_index
-		
+
         if min_index != left:
             l[min_index], l[left] = l[left], l[min_index]
-            
+
         left += 1
         right -= 1
-        
-all = [selection_sort,
-                selection_sort_II]
+    return l
+
+
+all = [selection_sort, selection_sort_II]
