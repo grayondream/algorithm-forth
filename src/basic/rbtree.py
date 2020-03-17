@@ -55,9 +55,9 @@ class rbtree(object):
         '''
         @brief  将父节点设为red，子节点设为black
         '''
-        node.color = red
-        node.left.color = black
-        node.right.color = black
+        node.color = not node.color
+        node.left.color = not node.left.color
+        node.right.color = not node.right.color
         return node
         
     @staticmethod
@@ -80,7 +80,7 @@ class rbtree(object):
             node = rbtree.flip_color(node)
         elif rbtree.is_red(node.left) and rbtree.is_red(node.lef.left):
             node = rbtree.rotate_right(node)
-        elif rbtree.is_red(node.right) and rbtree.is_red(node.left):
+        elif rbtree.is_red(node.right) and not rbtree.is_red(node.left):
             node = rbtree.rotate_left(node)
             
         return node
