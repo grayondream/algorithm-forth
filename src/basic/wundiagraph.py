@@ -88,12 +88,18 @@ class wundiagraph:
         
     def vs(self):
         return list(self.data.keys())
-
+    
+    def adj(self, v):
+        ret = []
+        for edge in self.data[v]:
+            ret.append(edge.other(v))
+            
+        return list(set(ret))
 
 def wundiagraph_test():
     vec = [[1, 2, 3], [1, 3, 4], [2, 4, 6], [3, 5, 5]]
     g = wundiagraph(vec)
     print('顶点数 ', g.v(), ' 顶点　', g.vs())
     print('边数', g.e(), ' 边', g.es())
-    
+    print('邻接点', g.adj(1))
     
