@@ -10,6 +10,8 @@ import os
 from matplotlib import pyplot as plt
 from test import test
 from src.string import compare
+from src.basic.tgraph import tgraph_test
+from src.basic.mgraph import mgraph_test
 
 
 def vertify_sort_test():
@@ -44,15 +46,19 @@ def test_sort_performance():
         test.sort.test_sort_preformance(path, func, key, count=1000)
 
 
+def graph_test_main():
+    mgraph_test()
+    
 def main():
     #vertify_sort_test()
     #test_sort_visualize()
-    test_sort_performance()
+    #test_sort_performance()
     #kmp_test()
     #boyemoore_test()
     #rabinkarp_test()
     #compare.compare_test()
-
+    graph_test_main()
+    
 
 if __name__ == '__main__':
     main()
