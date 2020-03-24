@@ -12,6 +12,8 @@ from test import test
 from src.string import compare
 from src.basic.tgraph import tgraph_test
 from src.basic.mgraph import mgraph_test
+from src.basic.undiagraph import undiagraph_test
+from src.basic.diagraph import diagraph_test
 
 
 def vertify_sort_test():
@@ -47,7 +49,9 @@ def test_sort_performance():
 
 
 def graph_test_main():
-    mgraph_test()
+    #mgraph_test()
+    diagraph_test()
+    
     
 def main():
     #vertify_sort_test()

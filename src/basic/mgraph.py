@@ -59,7 +59,7 @@ class mgraph(graph):
 
         return cnt
 
-    def add_edge(self, v, w):
+    def add_edge(self, v, w, weight=1):
         '''
         @brief  添加边v,w，如果是有向图则v->w
         @param
@@ -70,16 +70,16 @@ class mgraph(graph):
             self.keys[self.ids[v]] = v
             if self.data is None:
                 self.data = []
-                
+
             self.data.append([0] * self.v())
-            
+
         if w is not None and w not in self.vs():
             self.data.append([0] * self.v())
             self.ids[w] = len(self.vs())
             self.keys[self.ids[w]] = w
             [self.data[i].append(0) for i in range(len(self.data))]
-            self.data[self.ids[w]][self.ids[v]] = 1
-            self.data[self.ids[v]][self.ids[w]] = 1
+            self.data[self.ids[w]][self.ids[v]] = weight
+            self.data[self.ids[v]][self.ids[w]] = weight
 
     def adj(self, v):
         ''''
@@ -95,7 +95,7 @@ class mgraph(graph):
         for i in line:
             if i != 0:
                 ret.append(self.keys[i])
-        
+
         return ret
 
 
