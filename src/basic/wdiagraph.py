@@ -1,3 +1,5 @@
+from src.basic.wundiagraph import min_queue, wvector
+import sys
 
 
 class wdiaedge(object):
@@ -91,11 +93,42 @@ class wdiagraph:
             
         return ret
         
+    
+def dijkstra_sp(g, v):
+    '''
+    @brief  dijkstra最短路径算法
+    '''
+    edge_to = {}
+    dist_to = {}
+    min_q = min_queue()
+    for p in g.vs():
+        dist_to[p] = sys.maxsize
+    
+    min_q.insert(wvector(v, 0.0))
+    dist_to[v] = 0
+    while not min_q.empty():
+        cur = min_q.del_min()
+        dijkstra_releax(g, cur.v, edge_to, dist_to, min_q)
         
+    return edge_to
+    
+def dijkstra_releax(g, v, edge_to, dist_to, min_q):
+    for e in g.adj(v):
+        w = e.other(v)
+        if e.weight + dist_to[v] < dist_to[w]:
+            dist_to[w] = e.weight + dist_to[v]
+            edge_to[w] = e
+            id = min_q.find(wvector(w, 0))
+            if id != -1:
+                min_q.replace(id, wvector(w, dist_to[w]))
+            else:
+                min_q.insert(wvector(w, dist_to[w]))
+                
+
 def wdiagraph_test():
     vec = [[1, 2, 3], [1, 3, 4], [2, 4, 6], [3, 5, 5], [4, 1, 10]]
     g = wdiagraph(vec)
     print('顶点数 ', g.v(), ' 顶点　', g.vs())
     print('边数', g.e(), ' 边', g.es())
     print('邻接点', g.adj(1))
-        
+    print('dijstra最短路径', dijkstra_sp(g, 1))
