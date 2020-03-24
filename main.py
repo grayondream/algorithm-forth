@@ -15,6 +15,7 @@ from src.basic.mgraph import mgraph_test
 from src.basic.undiagraph import undiagraph_test
 from src.basic.diagraph import diagraph_test
 from src.basic.wundiagraph import wundiagraph_test
+from src.basic.wdiagraph import wdiagraph_test
 
 
 def vertify_sort_test():
@@ -52,8 +53,8 @@ def test_sort_performance():
 def graph_test_main():
     #mgraph_test()
     #diagraph_test()
-    wundiagraph_test()
-
+    #wundiagraph_test()
+    wdiagraph_test()
 
 def main():
     #vertify_sort_test()
