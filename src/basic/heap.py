@@ -305,6 +305,7 @@ class max_queue_order(max_queue_array):
         i = self.find(item, equal)
         self.data[i] = item
         
+        
 class max_queue_unorder(max_queue_array):
     '''
     @brief  无序数组的优先队列
