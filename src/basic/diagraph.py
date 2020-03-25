@@ -143,13 +143,13 @@ class diagraph(tgraph):
 
         return self.reverse_traversal()
 
-        def isdag(self):
-            ''''
-            @brief 是不是有向无环图
-            @param
-            @return
-            '''
-            return self.get_cycle() == None
+    def isdag(self):
+        ''''
+        @brief 是不是有向无环图
+        @param
+        @return
+        '''
+        return self.get_cycle() == None
 
     def get_kosaraju_scc(self):
         ''''
