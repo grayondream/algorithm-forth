@@ -1,4 +1,5 @@
 from src.basic.wundiagraph import min_queue, wvector
+from src.basic.queue import queue
 import sys
 
 
@@ -48,9 +49,12 @@ class wdiaedge(object):
         
         
 class wdiagraph:
-    def __init__(self, vectors):
+    def __init__(self, vectors=None):
         super(wdiagraph, self).__init__()
         self.data = {}
+        if vectors is None:
+            return
+            
         for vec in vectors:
             v, w, weight = vec
             self.add_edge(v, w, weight)
@@ -234,6 +238,54 @@ def dijkstra_nocycle_sp(g, v):
     return edge_to
     
     
+def findnegative_cycle(edge_to, dist_to):
+    ''''
+    @brief 必须配合relax使用，当每个顶点都经过relax后还存在环，则一定是有负权边的环
+    '''
+    g = wdiagraph(None)
+    for w in edge_to.keys():
+        e = edge_to[w]
+        g.add_edge(e.v, e.w, e.weight)
+        
+    cycle = g.get_cycle()
+    return cycle
+    
+    
+def ford_relax(g, v, dist_to, edge_to, q, onq, cost):
+    for e in g.adj(v):
+        w = e.to()
+        if dist_to[w] > dist_to[v] + e.weight:
+            dist_to[w] = dist_to[v] + e.weight
+            edge_to[w] = e
+            if not onq[w]:
+                q.enqueue(w)
+                onq[w] = True
+        if cost % g.v() == 0:
+            findnegative_cycle(edge_to, dist_to)
+            
+        cost += 1
+        
+        
+def ford_sp(g, v):
+    edge_to = {}
+    dist_to = {}
+    onq = {}
+    q = queue()
+    for w in g.vs():
+        dist_to[w] = sys.maxsize
+        onq[w] = False
+        
+    dist_to[v] = 0.0
+    q.enqueue(v)
+    onq[v] = True
+    cost = 0
+    while not q.empty() and not findnegative_cycle(edge_to, dist_to):
+        v = q.dequeue()
+        ford_relax(g, v, dist_to, edge_to, q, onq, cost)
+
+    return edge_to
+    
+    
 def wdiagraph_test():
     vec = [[1, 2, 3], [1, 3, 4], [2, 4, 6], [3, 5, 5], [4, 1, 10]]
     g = wdiagraph(vec)
@@ -242,3 +294,4 @@ def wdiagraph_test():
     print('邻接点', g.adj(1))
     print('dijstra最短路径', dijkstra_sp(g, 1))
     print('无环图dijstra最短路径', dijkstra_nocycle_sp(g, 1))
+    print('无环图ford最短路径', ford_sp(g, 1))
