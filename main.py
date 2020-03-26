@@ -16,6 +16,7 @@ from src.basic.undiagraph import undiagraph_test
 from src.basic.diagraph import diagraph_test
 from src.basic.wundiagraph import wundiagraph_test
 from src.basic.wdiagraph import wdiagraph_test
+from src.basic.nfa import nfa_test
 
 
 def vertify_sort_test():
@@ -56,6 +57,11 @@ def graph_test_main():
     #wundiagraph_test()
     wdiagraph_test()
 
+
+def nfa_test_main():
+    nfa_test()
+    
+    
 def main():
     #vertify_sort_test()
     #test_sort_visualize()
@@ -64,8 +70,8 @@ def main():
     #boyemoore_test()
     #rabinkarp_test()
     #compare.compare_test()
-    graph_test_main()
-
+    #graph_test_main()
+    nfa_test_main()
 
 if __name__ == '__main__':
     main()
